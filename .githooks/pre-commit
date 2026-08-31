@@ -8,11 +8,11 @@ if [ -z "$CHANGED" ]; then
 fi
 
 echo "→ ktlintFormat"
-./gradlew ktlintFormat --daemon -q
+./gradlew ktlintFormat --daemon
 
 echo "$CHANGED" | xargs git add
 
 echo "→ detekt"
-./gradlew detekt --daemon -q
+./gradlew detekt --daemon
 
 echo "✓ pre-commit ok"
