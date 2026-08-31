@@ -1,0 +1,29 @@
+plugins {
+    `kotlin-dsl`
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+dependencies {
+    compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.agp.gradlePlugin)
+    compileOnly(libs.compose.gradlePlugin)
+    compileOnly(libs.composeCompiler.gradlePlugin)
+    compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.room.gradlePlugin)
+}
+
+gradlePlugin {
+    plugins {
+        register("kmpLibrary") {
+            id = "ant.kmp.library"
+            implementationClass = "KmpLibraryConventionPlugin"
+        }
+        register("kmpFeature") {
+            id = "ant.kmp.feature"
+            implementationClass = "KmpFeatureConventionPlugin"
+        }
+    }
+}

@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+CHANGED=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.kts?$' || true)
+
+if [ -z "$CHANGED" ]; then
+    exit 0
+fi
+
+echo "→ ktlintFormat"
+./gradlew ktlintFormat --daemon -q
+
+echo "$CHANGED" | xargs git add
+
+echo "→ detekt"
+./gradlew detekt --daemon -q
+
+echo "✓ pre-commit ok"
