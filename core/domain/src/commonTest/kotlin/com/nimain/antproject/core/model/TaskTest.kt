@@ -1,5 +1,10 @@
 package com.nimain.antproject.core.model
 
+import com.nimain.antproject.core.domain.tasks.Subtask
+import com.nimain.antproject.core.domain.tasks.SubtaskId
+import com.nimain.antproject.core.domain.tasks.Task
+import com.nimain.antproject.core.domain.tasks.TaskId
+import com.nimain.antproject.core.domain.tasks.TaskStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.Clock

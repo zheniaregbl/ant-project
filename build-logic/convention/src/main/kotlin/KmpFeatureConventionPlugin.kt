@@ -7,7 +7,6 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.project
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class KmpFeatureConventionPlugin : Plugin<Project> {
@@ -29,7 +28,7 @@ class KmpFeatureConventionPlugin : Plugin<Project> {
                 implementation(libs.bundle("koin-common"))
                 implementation(libs.lib("navigation-compose"))
 
-                implementation(project(":core:model"))
+                implementation(project(":core:domain"))
             }
 
             sourceSets.androidMain.dependencies {
