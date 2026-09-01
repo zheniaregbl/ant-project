@@ -1,4 +1,4 @@
-package com.nimain.antproject.core.model
+package com.nimain.antproject.core.domain.tasks
 
 import kotlinx.datetime.DayOfWeek
 import kotlin.jvm.JvmInline
