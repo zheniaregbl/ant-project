@@ -25,5 +25,9 @@ gradlePlugin {
             id = "ant.kmp.feature"
             implementationClass = "KmpFeatureConventionPlugin"
         }
+        register("kmpRoom") {
+            id = "ant.kmp.room"
+            implementationClass = "KmpRoomConventionPlugin"
+        }
     }
 }
