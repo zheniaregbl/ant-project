@@ -1,4 +1,4 @@
-package com.nimain.antproject.core.database
+package com.nimain.antproject.core.database.dao
 
 import androidx.room.Dao
 

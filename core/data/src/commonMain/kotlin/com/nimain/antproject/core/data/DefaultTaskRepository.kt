@@ -1,6 +1,6 @@
 package com.nimain.antproject.core.data
 
-import com.nimain.antproject.core.database.TaskDao
+import com.nimain.antproject.core.database.dao.TaskDao
 import com.nimain.antproject.core.domain.tasks.TaskRepository
 
 class DefaultTaskRepository(
