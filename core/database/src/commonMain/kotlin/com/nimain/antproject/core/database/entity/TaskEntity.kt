@@ -28,11 +28,11 @@ internal data class TaskEntity(
     @ColumnInfo(name = "id")
     val id: Uuid,
     @ColumnInfo(name = "project_id")
-    val projectId: Uuid?,
+    val projectId: Uuid? = null,
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "description")
-    val description: String?,
+    val description: String? = null,
     @ColumnInfo(name = "status")
     val status: String,
     @ColumnInfo(name = "priority")
@@ -40,17 +40,17 @@ internal data class TaskEntity(
     @ColumnInfo(name = "position")
     val position: Double,
     @ColumnInfo(name = "due_date")
-    val dueDate: Long?,
+    val dueDate: Long? = null,
     @ColumnInfo(name = "recurrence")
-    val recurrence: String?,
+    val recurrence: String? = null,
     @ColumnInfo(name = "next_occurrence_at")
-    val nextOccurrenceAt: Long?,
+    val nextOccurrenceAt: Long? = null,
     @ColumnInfo(name = "created_at")
     val createdAt: Long,
     @ColumnInfo(name = "updated_at")
     val updatedAt: Long,
     @ColumnInfo(name = "server_version")
-    val serverVersion: Long?,
+    val serverVersion: Long? = null,
     @ColumnInfo(name = "is_dirty")
     val isDirty: Boolean,
 )
