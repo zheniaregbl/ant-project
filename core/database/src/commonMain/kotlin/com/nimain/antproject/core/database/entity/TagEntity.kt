@@ -18,4 +18,6 @@ internal data class TagEntity(
     val serverVersion: Long?,
     @ColumnInfo(name = "is_dirty")
     val isDirty: Boolean,
+    @ColumnInfo(name = "color")
+    val color: String,
 )

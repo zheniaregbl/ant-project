@@ -25,7 +25,7 @@ import com.nimain.antproject.core.database.util.UuidConverter
         TaskEntity::class,
         TaskTagEntity::class,
     ],
-    version = 1,
+    version = 2,
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 @TypeConverters(UuidConverter::class)

@@ -5,6 +5,7 @@ import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import androidx.sqlite.execSQL
 import com.nimain.antproject.core.database.AppDatabase
+import com.nimain.antproject.core.database.MIGRATION_1_2
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 
@@ -17,4 +18,5 @@ internal fun RoomDatabase.Builder<AppDatabase>.buildDatabase(): AppDatabase =
                 }
             },
         ).setQueryCoroutineContext(Dispatchers.IO)
+        .addMigrations(MIGRATION_1_2)
         .build()
