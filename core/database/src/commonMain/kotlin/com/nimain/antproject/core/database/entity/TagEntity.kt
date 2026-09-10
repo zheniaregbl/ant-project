@@ -19,5 +19,5 @@ internal data class TagEntity(
     @ColumnInfo(name = "is_dirty")
     val isDirty: Boolean,
     @ColumnInfo(name = "color")
-    val color: String,
+    val color: String? = null,
 )

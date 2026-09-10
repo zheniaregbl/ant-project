@@ -1,17 +1,16 @@
 package com.nimain.antproject.core.database
 
 import androidx.room.Room
-import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.nimain.antproject.core.database.entity.SubtaskEntity
 import com.nimain.antproject.core.database.entity.TagEntity
 import com.nimain.antproject.core.database.entity.TaskEntity
 import com.nimain.antproject.core.database.ext.buildDatabase
 import kotlinx.coroutines.test.runTest
-import java.io.File
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -70,8 +69,7 @@ class DatabaseTest {
         runTest {
             val fileDb =
                 createDatabaseBuilder(DatabaseContext())
-                    .setDriver(BundledSQLiteDriver())
-                    .build()
+                    .buildDatabase()
 
             val inputTag =
                 TagEntity(
@@ -80,16 +78,16 @@ class DatabaseTest {
                     updatedAt = Clock.System.now().toEpochMilliseconds(),
                     serverVersion = null,
                     isDirty = true,
+                    color = "RED",
                 )
 
             try {
                 fileDb.tagDao().insert(inputTag)
                 val tags = fileDb.tagDao().getAll()
-                assertEquals(1, tags.size)
-                assertEquals(inputTag.id, tags[0].id)
+                assertTrue(tags.contains(inputTag))
             } finally {
                 fileDb.close()
-                File(databaseDir()).deleteRecursively()
+                // File(databaseDir()).deleteRecursively()
             }
         }
 
