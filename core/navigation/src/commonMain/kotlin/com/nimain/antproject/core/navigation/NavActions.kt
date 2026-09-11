@@ -1,5 +1,7 @@
 package com.nimain.antproject.core.navigation
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -19,3 +21,9 @@ class NavActions(
         if (canNavigate) navController.navigateUp()
     }
 }
+
+@Composable
+fun rememberNavActions(
+    navController: NavController,
+    entry: NavBackStackEntry,
+): NavActions = remember(navController, entry) { NavActions(navController, entry) }
