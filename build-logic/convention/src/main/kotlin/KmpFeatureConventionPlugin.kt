@@ -30,6 +30,7 @@ class KmpFeatureConventionPlugin : Plugin<Project> {
                 implementation(libs.lib("navigation-compose"))
 
                 implementation(project(":core:domain"))
+                implementation(project(":core:navigation"))
             }
 
             sourceSets.androidMain.dependencies {
