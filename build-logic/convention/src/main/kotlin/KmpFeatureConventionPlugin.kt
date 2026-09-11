@@ -15,6 +15,7 @@ class KmpFeatureConventionPlugin : Plugin<Project> {
         pluginManager.apply("ant.kmp.library")
         pluginManager.apply("org.jetbrains.compose")
         pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+        pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
 
         extensions.configure<KotlinMultiplatformExtension> {
 
