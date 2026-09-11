@@ -1,9 +1,9 @@
 plugins {
-    id("ant.kmp.library")
+    id("ant.kmp.compose")
 }
 
 kotlin {
     sourceSets.commonMain.dependencies {
-        implementation(libs.navigation.compose)
+        api(libs.navigation.compose)
     }
 }

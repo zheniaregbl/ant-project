@@ -12,9 +12,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 class KmpFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
 
-        pluginManager.apply("ant.kmp.library")
-        pluginManager.apply("org.jetbrains.compose")
-        pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+        pluginManager.apply("ant.kmp.compose")
         pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
 
         extensions.configure<KotlinMultiplatformExtension> {
@@ -27,7 +25,6 @@ class KmpFeatureConventionPlugin : Plugin<Project> {
             sourceSets.commonMain.dependencies {
                 implementation(libs.bundle("compose-common"))
                 implementation(libs.bundle("koin-common"))
-                implementation(libs.lib("navigation-compose"))
 
                 implementation(project(":core:domain"))
                 implementation(project(":core:navigation"))

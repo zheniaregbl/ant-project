@@ -21,6 +21,10 @@ gradlePlugin {
             id = "ant.kmp.library"
             implementationClass = "KmpLibraryConventionPlugin"
         }
+        register("kmpCompose") {
+            id = "ant.kmp.compose"
+            implementationClass = "KmpComposeConventionPlugin"
+        }
         register("kmpFeature") {
             id = "ant.kmp.feature"
             implementationClass = "KmpFeatureConventionPlugin"
