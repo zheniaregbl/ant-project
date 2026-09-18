@@ -13,9 +13,9 @@ private const val MAX_DAY_OF_MONTH = 31
 private val DAY_OF_MONTH_RANGE = MIN_DAY_OF_MONTH..MAX_DAY_OF_MONTH
 
 private const val NONE_WEIGHT_TASK_PRIORITY = 0
-private const val LOW_WEIGHT_TASK_PRIORITY = 0
-private const val MEDIUM_WEIGHT_TASK_PRIORITY = 0
-private const val HIGH_WEIGHT_TASK_PRIORITY = 0
+private const val LOW_WEIGHT_TASK_PRIORITY = 10
+private const val MEDIUM_WEIGHT_TASK_PRIORITY = 20
+private const val HIGH_WEIGHT_TASK_PRIORITY = 30
 
 data class Task(
     val id: TaskId,
