@@ -1,5 +1,7 @@
 package com.nimain.antproject.core.domain.tasks
 
+import com.nimain.antproject.core.domain.projects.ProjectId
+import com.nimain.antproject.core.domain.tags.TagId
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
@@ -153,14 +155,6 @@ sealed interface Recurrence {
 )
 
 @JvmInline value class SeriesId(
-    val value: String,
-)
-
-@JvmInline value class ProjectId(
-    val value: String,
-)
-
-@JvmInline value class TagId(
     val value: String,
 )
 
