@@ -46,7 +46,7 @@ data class Task(
 
         if (description != null) {
             require(description.isNotBlank()) {
-                "Task [${id.value}] is invalid, if a task has a description, it should not be empty."
+                "Task [${id.value}] is invalid, if a task has a description, it can not be blank."
             }
         }
 
@@ -55,12 +55,12 @@ data class Task(
         }
 
         if (recurrence != null) {
-            require(seriesId != null && dueDate != null) {
+            require(seriesId != null) {
                 "Task [${id.value}] is invalid, tasks with recurrence must have seriesId and dueDate."
             }
 
             val until = recurrence.until
-            if (until != null) {
+            if (until != null && dueDate != null) {
                 require(
                     until >= dueDate,
                 ) { "Task [${id.value}] is invalid, dueDate can not be later than until field of recurrence." }
