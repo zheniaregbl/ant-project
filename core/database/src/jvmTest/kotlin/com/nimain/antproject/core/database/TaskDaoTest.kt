@@ -2,12 +2,11 @@ package com.nimain.antproject.core.database
 
 import androidx.room.Room
 import com.nimain.antproject.core.database.entity.ProjectEntity
-import com.nimain.antproject.core.database.entity.STATUS_ACTIVE
-import com.nimain.antproject.core.database.entity.STATUS_DONE
 import com.nimain.antproject.core.database.entity.SubtaskEntity
 import com.nimain.antproject.core.database.entity.TagEntity
 import com.nimain.antproject.core.database.entity.TaskEntity
 import com.nimain.antproject.core.database.ext.buildDatabase
+import com.nimain.antproject.core.database.util.TaskStatusCode
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
@@ -54,7 +53,7 @@ class TaskDaoTest {
     fun inboxExcludesCompletedTasks() =
         runTest {
             val active = task()
-            val done = task(status = STATUS_DONE, completedAt = BASE_TIME)
+            val done = task(status = TaskStatusCode.DONE, completedAt = BASE_TIME)
             db.taskDao().insert(active)
             db.taskDao().insert(done)
 
@@ -140,7 +139,7 @@ class TaskDaoTest {
     private fun task(
         title: String = "Задача",
         projectId: Uuid? = null,
-        status: String = STATUS_ACTIVE,
+        status: String = TaskStatusCode.ACTIVE,
         completedAt: Long? = null,
         createdAt: Long = BASE_TIME,
     ) = TaskEntity(
