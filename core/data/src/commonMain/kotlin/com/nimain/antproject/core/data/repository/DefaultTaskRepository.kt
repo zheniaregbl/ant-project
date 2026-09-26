@@ -1,4 +1,4 @@
-package com.nimain.antproject.core.data
+package com.nimain.antproject.core.data.repository
 
 import com.nimain.antproject.core.data.mapper.toEntity
 import com.nimain.antproject.core.data.mapper.toTaskId
