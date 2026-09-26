@@ -1,13 +1,13 @@
 package com.nimain.antproject.core.database
 
 import androidx.room.Room
-import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.nimain.antproject.core.database.entity.SubtaskEntity
 import com.nimain.antproject.core.database.entity.TagEntity
 import com.nimain.antproject.core.database.entity.TaskEntity
 import com.nimain.antproject.core.database.ext.buildDatabase
 import kotlinx.coroutines.test.runTest
 import java.io.File
+import java.nio.file.Files
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -68,10 +68,9 @@ class DatabaseTest {
     @Test
     fun insertAndReadTagInFileDb() =
         runTest {
+            val tempDir = Files.createTempDirectory("ant-db-test").toFile()
             val fileDb =
-                createDatabaseBuilder(DatabaseContext())
-                    .setDriver(BundledSQLiteDriver())
-                    .build()
+                createDatabaseBuilderAt(File(tempDir, Const.DATABASE_NAME)).buildDatabase()
 
             val inputTag =
                 TagEntity(
@@ -89,7 +88,7 @@ class DatabaseTest {
                 assertEquals(inputTag.id, tags[0].id)
             } finally {
                 fileDb.close()
-                File(databaseDir()).deleteRecursively()
+                tempDir.deleteRecursively()
             }
         }
 
