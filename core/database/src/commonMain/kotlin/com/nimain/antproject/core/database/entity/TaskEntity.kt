@@ -23,7 +23,7 @@ import kotlin.uuid.Uuid
         Index(value = ["next_occurrence_at"]),
     ],
 )
-internal data class TaskEntity(
+data class TaskEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Uuid,

@@ -25,7 +25,7 @@ import kotlin.uuid.Uuid
     ],
     indices = [Index(value = ["tag_id"])],
 )
-internal data class TaskTagEntity(
+data class TaskTagEntity(
     @ColumnInfo(name = "task_id")
     val taskId: Uuid,
     @ColumnInfo(name = "tag_id")

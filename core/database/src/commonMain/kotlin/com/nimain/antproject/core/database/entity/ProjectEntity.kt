@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import kotlin.uuid.Uuid
 
 @Entity(tableName = "project")
-internal data class ProjectEntity(
+data class ProjectEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Uuid,

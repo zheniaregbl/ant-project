@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.nimain.antproject.core.database.entity.TaskEntity
 
 @Dao
-internal interface TaskDao {
+interface TaskDao {
     @Insert
     suspend fun insert(task: TaskEntity)
 

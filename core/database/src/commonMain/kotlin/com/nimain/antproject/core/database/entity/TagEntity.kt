@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import kotlin.uuid.Uuid
 
 @Entity(tableName = "tag")
-internal data class TagEntity(
+data class TagEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Uuid,

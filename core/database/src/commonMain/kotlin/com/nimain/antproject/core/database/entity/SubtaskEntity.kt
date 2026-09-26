@@ -19,7 +19,7 @@ import kotlin.uuid.Uuid
     ],
     indices = [Index(value = ["task_id", "position"])],
 )
-internal data class SubtaskEntity(
+data class SubtaskEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Uuid,
