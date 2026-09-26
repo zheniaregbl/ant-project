@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.nimain.antproject.core.database.entity.SubtaskEntity
 
 @Dao
-internal interface SubtaskDao {
+interface SubtaskDao {
     @Insert
     suspend fun insert(subtask: SubtaskEntity)
 

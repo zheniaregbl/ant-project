@@ -6,7 +6,7 @@ import androidx.room.Query
 import com.nimain.antproject.core.database.entity.TagEntity
 
 @Dao
-internal interface TagDao {
+interface TagDao {
     @Insert
     suspend fun insert(tag: TagEntity)
 

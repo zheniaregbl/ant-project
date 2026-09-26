@@ -1,13 +1,14 @@
 package com.nimain.antproject.core.database
 
 import androidx.room.Room
-import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.nimain.antproject.core.database.entity.STATUS_ACTIVE
 import com.nimain.antproject.core.database.entity.SubtaskEntity
 import com.nimain.antproject.core.database.entity.TagEntity
 import com.nimain.antproject.core.database.entity.TaskEntity
 import com.nimain.antproject.core.database.ext.buildDatabase
 import kotlinx.coroutines.test.runTest
 import java.io.File
+import java.nio.file.Files
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -35,7 +36,7 @@ class DatabaseTest {
                 TaskEntity(
                     id = Uuid.generateV7(),
                     title = "Task 1",
-                    status = "Active",
+                    status = STATUS_ACTIVE,
                     priority = 1,
                     position = 1.0,
                     createdAt = Clock.System.now().toEpochMilliseconds(),
@@ -68,15 +69,16 @@ class DatabaseTest {
     @Test
     fun insertAndReadTagInFileDb() =
         runTest {
+            val tempDir = Files.createTempDirectory("ant-db-test").toFile()
             val fileDb =
-                createDatabaseBuilder(DatabaseContext())
-                    .setDriver(BundledSQLiteDriver())
-                    .build()
+                createDatabaseBuilderAt(File(tempDir, Const.DATABASE_NAME)).buildDatabase()
 
             val inputTag =
                 TagEntity(
                     id = Uuid.generateV7(),
                     title = "Tag 1",
+                    normalizedTitle = "Tag 1".lowercase(),
+                    createdAt = Clock.System.now().toEpochMilliseconds(),
                     updatedAt = Clock.System.now().toEpochMilliseconds(),
                     serverVersion = null,
                     isDirty = true,
@@ -89,7 +91,7 @@ class DatabaseTest {
                 assertEquals(inputTag.id, tags[0].id)
             } finally {
                 fileDb.close()
-                File(databaseDir()).deleteRecursively()
+                tempDir.deleteRecursively()
             }
         }
 

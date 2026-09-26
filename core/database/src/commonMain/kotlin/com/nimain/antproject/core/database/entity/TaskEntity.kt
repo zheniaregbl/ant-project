@@ -7,6 +7,10 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlin.uuid.Uuid
 
+const val STATUS_ACTIVE = "Active"
+const val STATUS_DONE = "Done"
+const val STATUS_SKIPPED = "Skipped"
+
 @Entity(
     tableName = "task",
     foreignKeys = [
@@ -18,12 +22,11 @@ import kotlin.uuid.Uuid
         ),
     ],
     indices = [
-        Index(value = ["project_id", "position"]),
-        Index(value = ["is_dirty"]),
-        Index(value = ["next_occurrence_at"]),
+        Index(value = ["project_id"]),
+        Index(value = ["due_date"]),
     ],
 )
-internal data class TaskEntity(
+data class TaskEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Uuid,
@@ -40,15 +43,17 @@ internal data class TaskEntity(
     @ColumnInfo(name = "position")
     val position: Double,
     @ColumnInfo(name = "due_date")
-    val dueDate: Long? = null,
+    val dueDate: String? = null,
+    @ColumnInfo(name = "due_time")
+    val dueTime: String? = null,
     @ColumnInfo(name = "recurrence")
     val recurrence: String? = null,
-    @ColumnInfo(name = "next_occurrence_at")
-    val nextOccurrenceAt: Long? = null,
     @ColumnInfo(name = "created_at")
     val createdAt: Long,
     @ColumnInfo(name = "updated_at")
     val updatedAt: Long,
+    @ColumnInfo(name = "completed_at")
+    val completedAt: Long? = null,
     @ColumnInfo(name = "server_version")
     val serverVersion: Long? = null,
     @ColumnInfo(name = "is_dirty")

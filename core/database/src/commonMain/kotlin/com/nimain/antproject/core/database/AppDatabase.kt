@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
+import com.nimain.antproject.core.database.dao.ProjectDao
 import com.nimain.antproject.core.database.dao.SubtaskDao
 import com.nimain.antproject.core.database.dao.TagDao
 import com.nimain.antproject.core.database.dao.TaskDao
@@ -35,6 +36,8 @@ internal abstract class AppDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
 
     abstract fun subtaskDao(): SubtaskDao
+
+    abstract fun projectDao(): ProjectDao
 }
 
 @Suppress("NO_ACTUAL_FOR_EXPECT")

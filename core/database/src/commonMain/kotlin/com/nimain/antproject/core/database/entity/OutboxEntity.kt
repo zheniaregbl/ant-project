@@ -8,7 +8,7 @@ import kotlin.uuid.Uuid
     tableName = "outbox",
     primaryKeys = ["entity_type", "entity_id"],
 )
-internal data class OutboxEntity(
+data class OutboxEntity(
     @ColumnInfo(name = "entity_type")
     val entityType: String,
     @ColumnInfo(name = "entity_id")
