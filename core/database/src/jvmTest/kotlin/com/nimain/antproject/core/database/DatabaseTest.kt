@@ -1,6 +1,7 @@
 package com.nimain.antproject.core.database
 
 import androidx.room.Room
+import com.nimain.antproject.core.database.entity.STATUS_ACTIVE
 import com.nimain.antproject.core.database.entity.SubtaskEntity
 import com.nimain.antproject.core.database.entity.TagEntity
 import com.nimain.antproject.core.database.entity.TaskEntity
@@ -35,7 +36,7 @@ class DatabaseTest {
                 TaskEntity(
                     id = Uuid.generateV7(),
                     title = "Task 1",
-                    status = "Active",
+                    status = STATUS_ACTIVE,
                     priority = 1,
                     position = 1.0,
                     createdAt = Clock.System.now().toEpochMilliseconds(),
@@ -76,6 +77,8 @@ class DatabaseTest {
                 TagEntity(
                     id = Uuid.generateV7(),
                     title = "Tag 1",
+                    normalizedTitle = "Tag 1".lowercase(),
+                    createdAt = Clock.System.now().toEpochMilliseconds(),
                     updatedAt = Clock.System.now().toEpochMilliseconds(),
                     serverVersion = null,
                     isDirty = true,
