@@ -1,8 +1,8 @@
 package com.nimain.antproject.core.domain.tasks
 
-import com.nimain.antproject.core.domain.exception.ProjectNotFoundException
-import com.nimain.antproject.core.domain.exception.TagNotFoundException
-import com.nimain.antproject.core.domain.exception.TaskNotFoundException
+import com.nimain.antproject.core.domain.common.exception.ProjectNotFoundException
+import com.nimain.antproject.core.domain.common.exception.TagNotFoundException
+import com.nimain.antproject.core.domain.common.exception.TaskNotFoundException
 import com.nimain.antproject.core.domain.projects.ProjectId
 import com.nimain.antproject.core.domain.tags.TagId
 import kotlinx.coroutines.flow.Flow

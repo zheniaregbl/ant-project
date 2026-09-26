@@ -1,4 +1,4 @@
-package com.nimain.antproject.core.domain.exception
+package com.nimain.antproject.core.domain.common.exception
 
 import com.nimain.antproject.core.domain.projects.ProjectId
 import com.nimain.antproject.core.domain.tags.TagId
