@@ -25,9 +25,12 @@ interface TaskDao {
                (SELECT COUNT(*) FROM subtask s WHERE s.task_id = t.id AND s.is_done = 1) AS done_subtasks
         FROM task t
         LEFT JOIN project p ON p.id = t.project_id
-        WHERE t.project_id IS NULL AND t.status = 'active'
+        WHERE t.project_id IS NULL AND t.status = 'Active'
         ORDER BY t.created_at DESC, t.id DESC
         """,
     )
     fun observeInbox(): Flow<List<TaskListRow>>
+
+    @Query("SELECT * FROM task")
+    suspend fun getAll(): List<TaskEntity>
 }
