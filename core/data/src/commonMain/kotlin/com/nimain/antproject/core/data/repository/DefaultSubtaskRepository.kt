@@ -49,7 +49,7 @@ internal class DefaultSubtaskRepository(
         val updated =
             subtaskDao.rename(
                 id = id.toUuid(),
-                title = title,
+                title = title.trim(),
             )
         if (updated == 0) throw SubtaskNotFoundException(id)
     }
