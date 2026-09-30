@@ -8,7 +8,7 @@ import com.nimain.antproject.core.database.AppDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 
-internal fun RoomDatabase.Builder<AppDatabase>.buildDatabase(): AppDatabase =
+fun RoomDatabase.Builder<AppDatabase>.buildDatabase(): AppDatabase =
     setDriver(BundledSQLiteDriver())
         .addCallback(
             object : RoomDatabase.Callback() {

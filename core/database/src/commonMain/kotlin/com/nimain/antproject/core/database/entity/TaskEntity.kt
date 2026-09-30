@@ -7,10 +7,6 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlin.uuid.Uuid
 
-const val STATUS_ACTIVE = "Active"
-const val STATUS_DONE = "Done"
-const val STATUS_SKIPPED = "Skipped"
-
 @Entity(
     tableName = "task",
     foreignKeys = [

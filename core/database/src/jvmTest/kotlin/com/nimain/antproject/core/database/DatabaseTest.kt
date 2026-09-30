@@ -1,11 +1,11 @@
 package com.nimain.antproject.core.database
 
 import androidx.room.Room
-import com.nimain.antproject.core.database.entity.STATUS_ACTIVE
 import com.nimain.antproject.core.database.entity.SubtaskEntity
 import com.nimain.antproject.core.database.entity.TagEntity
 import com.nimain.antproject.core.database.entity.TaskEntity
 import com.nimain.antproject.core.database.ext.buildDatabase
+import com.nimain.antproject.core.database.util.TaskStatusCode
 import kotlinx.coroutines.test.runTest
 import java.io.File
 import java.nio.file.Files
@@ -36,7 +36,7 @@ class DatabaseTest {
                 TaskEntity(
                     id = Uuid.generateV7(),
                     title = "Task 1",
-                    status = STATUS_ACTIVE,
+                    status = TaskStatusCode.ACTIVE,
                     priority = 1,
                     position = 1.0,
                     createdAt = Clock.System.now().toEpochMilliseconds(),

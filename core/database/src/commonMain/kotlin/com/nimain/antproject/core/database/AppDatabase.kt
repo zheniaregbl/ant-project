@@ -30,7 +30,7 @@ import com.nimain.antproject.core.database.util.UuidConverter
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 @TypeConverters(UuidConverter::class)
-internal abstract class AppDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract fun tagDao(): TagDao
 
     abstract fun taskDao(): TaskDao

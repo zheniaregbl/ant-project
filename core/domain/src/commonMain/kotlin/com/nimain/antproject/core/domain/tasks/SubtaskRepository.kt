@@ -14,7 +14,7 @@ interface SubtaskRepository {
     suspend fun createSubtask(
         taskId: TaskId,
         title: String,
-    )
+    ): SubtaskId
 
     /**
      * Меняет заголовок подзадачи с [id] на [title].

@@ -13,7 +13,6 @@ data class TaskListItem(
     val priority: Priority,
     val doneSubtasks: Int,
     val totalSubtasks: Int,
-    val progress: Float?,
     val tags: List<TagItem>,
     val dueDate: LocalDate?,
     val dueTime: LocalTime?,
