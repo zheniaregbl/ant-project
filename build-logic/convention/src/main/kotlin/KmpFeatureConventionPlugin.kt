@@ -13,6 +13,7 @@ class KmpFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
 
         pluginManager.apply("ant.kmp.compose")
+        pluginManager.apply("ant.kmp.koin")
         pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
 
         extensions.configure<KotlinMultiplatformExtension> {
