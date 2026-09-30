@@ -12,15 +12,12 @@ import com.nimain.antproject.tasks.ScheduledScreen
 import com.nimain.antproject.tasks.TaskDetailScreen
 import com.nimain.antproject.tasks.TaskListFilter
 import com.nimain.antproject.tasks.TaskListScreen
+import com.nimain.antproject.tasks.inbox.InboxScreen
 
 fun NavGraphBuilder.tasksGraph(navController: NavController) {
     navigation<TasksGraph>(startDestination = Inbox) {
         composable<Inbox> {
-            TaskListScreen(
-                modifier = Modifier.fillMaxSize(),
-                filter = TaskListFilter.Inbox,
-                onTaskClick = { },
-            )
+            InboxScreen()
         }
         composable<Scheduled> { ScheduledScreen(modifier = Modifier.fillMaxSize()) }
         composable<Projects> { entry ->
