@@ -1,5 +1,6 @@
 plugins {
     id("ant.kmp.library")
+    id("ant.kmp.koin")
 }
 
 kotlin {
