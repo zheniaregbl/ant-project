@@ -33,5 +33,9 @@ gradlePlugin {
             id = "ant.kmp.room"
             implementationClass = "KmpRoomConventionPlugin"
         }
+        register("kmpKoin") {
+            id = "ant.kmp.koin"
+            implementationClass = "KmpKoinConventionPlugin"
+        }
     }
 }
