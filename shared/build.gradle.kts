@@ -11,5 +11,9 @@ kotlin {
     }
     sourceSets.commonMain.dependencies {
         implementation(project(":feature:tasks"))
+        implementation(project(":core:data"))
+    }
+    sourceSets.androidMain.dependencies {
+        implementation(libs.koin.android)
     }
 }
