@@ -1,4 +1,5 @@
 import ext.bundle
+import ext.lib
 import ext.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -15,6 +16,10 @@ class KmpComposeConventionPlugin : Plugin<Project> {
         extensions.configure<KotlinMultiplatformExtension> {
             sourceSets.commonMain.dependencies {
                 implementation(libs.bundle("compose-common"))
+            }
+
+            sourceSets.androidMain.dependencies {
+                implementation(libs.lib("compose-uiTooling"))
             }
         }
     }
