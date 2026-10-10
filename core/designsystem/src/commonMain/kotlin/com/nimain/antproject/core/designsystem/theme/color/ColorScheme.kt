@@ -1,4 +1,4 @@
-package com.nimain.antproject.core.designsystem.theme
+package com.nimain.antproject.core.designsystem.theme.color
 
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme

@@ -1,4 +1,4 @@
-package com.nimain.antproject.core.designsystem.theme
+package com.nimain.antproject.core.designsystem.theme.color
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
