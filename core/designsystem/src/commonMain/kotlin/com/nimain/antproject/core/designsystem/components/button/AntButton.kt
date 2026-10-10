@@ -2,8 +2,8 @@ package com.nimain.antproject.core.designsystem.components.button
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
@@ -21,24 +21,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nimain.antproject.core.designsystem.theme.AntTheme
 
-private val ButtonMinHeight = 48.dp
-private val ButtonHorizontalPadding = 22.dp
-
 @Composable
 fun AntButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     variant: AntButtonVariant = AntButtonVariant.Primary,
+    size: AntButtonSize = AntButtonSize.Medium,
     enabled: Boolean = true,
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier.heightIn(min = ButtonMinHeight),
+        modifier = modifier.heightIn(min = size.minHeight),
         enabled = enabled,
         shape = CircleShape,
         colors = variant.colors(),
-        contentPadding = PaddingValues(horizontal = ButtonHorizontalPadding),
+        contentPadding = PaddingValues(horizontal = size.horizontalPadding),
     ) {
         Text(
             text = text,
@@ -75,15 +73,32 @@ private fun AntButtonCatalog() {
             modifier = Modifier.padding(AntTheme.spacing.screenHorizontal),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                AntButton(text = "Добавить", onClick = {})
-                AntButton(text = "Готово", onClick = {}, variant = AntButtonVariant.Inverse)
-                AntButton(text = "Отмена", onClick = {}, variant = AntButtonVariant.Text)
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                AntButtonSize.entries.forEach { size ->
+                    AntButton(text = size.name, onClick = {}, size = size)
+                }
             }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                AntButton(text = "Добавить", onClick = {}, enabled = false)
-                AntButton(text = "Готово", onClick = {}, variant = AntButtonVariant.Inverse, enabled = false)
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                AntButton(text = "Добавить", onClick = {}, size = AntButtonSize.Large)
+                AntButton(text = "Создать", onClick = {})
+                AntButton(text = "Отмена", onClick = {}, variant = AntButtonVariant.Text)
+                AntButton(text = "Готово", onClick = {}, variant = AntButtonVariant.Inverse, size = AntButtonSize.Small)
+            }
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                AntButton(text = "Добавить", onClick = {}, size = AntButtonSize.Large, enabled = false)
+                AntButton(text = "Создать", onClick = {}, enabled = false)
                 AntButton(text = "Отмена", onClick = {}, variant = AntButtonVariant.Text, enabled = false)
+                AntButton(text = "Готово", onClick = {
+                }, variant = AntButtonVariant.Inverse, size = AntButtonSize.Small, enabled = false)
             }
         }
     }
