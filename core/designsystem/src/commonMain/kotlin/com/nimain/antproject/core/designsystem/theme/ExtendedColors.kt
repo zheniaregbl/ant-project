@@ -1,6 +1,7 @@
 package com.nimain.antproject.core.designsystem.theme
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 @Immutable
@@ -27,6 +28,11 @@ data class ExtendedColors(
     val scrimDesktop: Color,
     val scrimPalette: Color,
 )
+
+internal val LocalExtendedColors =
+    staticCompositionLocalOf<ExtendedColors> {
+        error("ExtendedColors не предоставлены: оберни контент в AntTheme")
+    }
 
 internal val LightExtendedColors =
     ExtendedColors(
