@@ -11,6 +11,10 @@ import com.nimain.antproject.core.designsystem.theme.color.ExtendedColors
 import com.nimain.antproject.core.designsystem.theme.color.LightColorScheme
 import com.nimain.antproject.core.designsystem.theme.color.LightExtendedColors
 import com.nimain.antproject.core.designsystem.theme.color.LocalExtendedColors
+import com.nimain.antproject.core.designsystem.theme.elevation.DarkElevation
+import com.nimain.antproject.core.designsystem.theme.elevation.Elevation
+import com.nimain.antproject.core.designsystem.theme.elevation.LightElevation
+import com.nimain.antproject.core.designsystem.theme.elevation.LocalElevation
 import com.nimain.antproject.core.designsystem.theme.shape.AntShapes
 import com.nimain.antproject.core.designsystem.theme.spacing.CompactSpacing
 import com.nimain.antproject.core.designsystem.theme.spacing.LocalSpacing
@@ -26,10 +30,12 @@ fun AntTheme(
     content: @Composable () -> Unit,
 ) {
     val extendedColors = if (darkTheme) DarkExtendedColors else LightExtendedColors
+    val elevation = if (darkTheme) DarkElevation else LightElevation
     CompositionLocalProvider(
         LocalExtendedColors provides extendedColors,
         LocalExtendedTypography provides antExtendedTypography(),
         LocalSpacing provides CompactSpacing,
+        LocalElevation provides elevation,
     ) {
         MaterialTheme(
             colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
@@ -52,4 +58,8 @@ object AntTheme {
     val spacing: Spacing
         @Composable @ReadOnlyComposable
         get() = LocalSpacing.current
+
+    val elevation: Elevation
+        @Composable @ReadOnlyComposable
+        get() = LocalElevation.current
 }
