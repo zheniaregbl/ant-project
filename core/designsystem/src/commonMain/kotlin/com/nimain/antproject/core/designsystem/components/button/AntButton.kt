@@ -64,6 +64,13 @@ private fun AntButtonVariant.colors(): ButtonColors =
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 disabledContainerColor = Color.Transparent,
             )
+
+        AntButtonVariant.Destructive ->
+            ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent,
+                contentColor = MaterialTheme.colorScheme.error,
+                disabledContainerColor = Color.Transparent,
+            )
     }
 
 @Composable
@@ -87,6 +94,7 @@ private fun AntButtonCatalog() {
             ) {
                 AntButton(text = "Добавить", onClick = {}, size = AntButtonSize.Large)
                 AntButton(text = "Создать", onClick = {})
+                AntButton(text = "Удалить", onClick = {}, variant = AntButtonVariant.Destructive)
                 AntButton(text = "Отмена", onClick = {}, variant = AntButtonVariant.Text)
                 AntButton(text = "Готово", onClick = {}, variant = AntButtonVariant.Inverse, size = AntButtonSize.Small)
             }
@@ -96,6 +104,7 @@ private fun AntButtonCatalog() {
             ) {
                 AntButton(text = "Добавить", onClick = {}, size = AntButtonSize.Large, enabled = false)
                 AntButton(text = "Создать", onClick = {}, enabled = false)
+                AntButton(text = "Удалить", onClick = {}, variant = AntButtonVariant.Destructive, enabled = false)
                 AntButton(text = "Отмена", onClick = {}, variant = AntButtonVariant.Text, enabled = false)
                 AntButton(text = "Готово", onClick = {
                 }, variant = AntButtonVariant.Inverse, size = AntButtonSize.Small, enabled = false)

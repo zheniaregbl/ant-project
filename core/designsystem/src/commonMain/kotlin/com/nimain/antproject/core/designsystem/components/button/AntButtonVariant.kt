@@ -4,4 +4,5 @@ enum class AntButtonVariant {
     Primary,
     Inverse,
     Text,
+    Destructive,
 }
