@@ -28,6 +28,7 @@ class KmpFeatureConventionPlugin : Plugin<Project> {
 
                 implementation(project(":core:domain"))
                 implementation(project(":core:navigation"))
+                implementation(project(":core:designsystem"))
             }
 
 //            sourceSets.commonTest.dependencies {
