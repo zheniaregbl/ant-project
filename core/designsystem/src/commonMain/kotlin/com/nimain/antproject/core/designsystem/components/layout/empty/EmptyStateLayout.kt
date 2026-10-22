@@ -1,4 +1,4 @@
-package com.nimain.antproject.core.designsystem.components.layout
+package com.nimain.antproject.core.designsystem.components.layout.empty
 
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -9,6 +9,7 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.svg.SvgDecoder
+import com.nimain.antproject.core.designsystem.components.layout.StateLayout
 
 @Composable
 fun EmptyStateLayout(
