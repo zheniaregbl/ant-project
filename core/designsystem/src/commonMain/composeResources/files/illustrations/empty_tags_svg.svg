@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 56 370 224" width="740" height="448">
+  <!-- фон -->
+  <path d="M60 250 C30 190 60 110 140 80 C220 50 330 70 365 140 C395 200 370 250 330 262 L80 262 Z" fill="#EEF1F4"/>
+  <ellipse cx="225" cy="262" rx="170" ry="9" fill="#DDE2E8"/>
+
+  <!-- листья слева -->
+  <path d="M70 258 C66 236 60 224 52 214" fill="none" stroke="#4F7A55" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M63 234 C76 228 86 233 88 241 C76 244 68 241 63 234 Z" fill="#6F9C6E"/>
+  <path d="M57 222 C54 208 61 198 69 197 C71 209 66 217 57 222 Z" fill="#86B07F"/>
+
+  <!-- листья справа -->
+  <path d="M372 258 C376 232 384 218 394 206" fill="none" stroke="#4F7A55" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M380 230 C366 224 356 230 354 238 C366 241 375 238 380 230 Z" fill="#6F9C6E"/>
+  <path d="M386 216 C389 202 381 192 373 192 C371 204 377 212 386 216 Z" fill="#86B07F"/>
+  <path d="M390 210 C402 204 410 208 412 214 C402 218 395 216 390 210 Z" fill="#5E8C61"/>
+
+  <!-- камешки -->
+  <ellipse cx="318" cy="254" rx="14" ry="7" fill="#C9D0D8"/>
+  <ellipse cx="336" cy="256" rx="8" ry="4.5" fill="#B9C2CC"/>
+
+  <g transform="translate(44 0)">
+  <!-- штрихи движения -->
+  <g stroke="#AEB8C3" stroke-width="2.2" stroke-linecap="round">
+    <path d="M60 196 L78 196"/>
+    <path d="M52 208 L72 208"/>
+    <path d="M64 220 L80 220"/>
+  </g>
+
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <!-- дальние лапы -->
+    <g fill="none" stroke="#5A4A42" stroke-width="3.2">
+      <path d="M182 201 L204 220 L214 257 L221 258"/>
+      <path d="M174 206 L196 228 L202 257 L209 258"/>
+      <path d="M162 210 L156 234 L150 257 L157 258"/>
+    </g>
+
+    <!-- верёвочка тега -->
+    <path d="M158 123 C146 126 140 114 128 116 C118 118 116 128 106 128" fill="none" stroke="#C7843F" stroke-width="2"/>
+
+    <!-- пустой тег -->
+    <path d="M212 186 L149.7 142.7 L148.5 116.4 L173.6 108.3 L236 152 Z" fill="#FCEBD3" stroke="#E4A65D" stroke-width="3"/>
+    <path d="M206 176 L157 142" fill="none" stroke="#F0D2AA" stroke-width="2.4" stroke-dasharray="5 5"/>
+    <circle cx="157.5" cy="124" r="4.6" fill="#EEF1F4" stroke="#E4A65D" stroke-width="2"/>
+
+    <!-- брюшко -->
+    <ellipse cx="120" cy="222" rx="29" ry="18" transform="rotate(-10 120 222)" fill="#2E2522"/>
+    <ellipse cx="113" cy="214" rx="13" ry="5.5" transform="rotate(-10 113 214)" fill="#4A3B35"/>
+    <!-- стебелёк -->
+    <ellipse cx="149" cy="213" rx="6" ry="6.5" fill="#2E2522"/>
+    <!-- грудь -->
+    <ellipse cx="168" cy="205" rx="20" ry="9" transform="rotate(-22 168 205)" fill="#2E2522"/>
+    <ellipse cx="164" cy="203" rx="8" ry="3" transform="rotate(-22 164 203)" fill="#4A3B35"/>
+
+    <!-- ближние лапы -->
+    <g fill="none" stroke="#2E2522" stroke-width="3.6">
+      <path d="M170 209 L180 232 L186 257 L193 258"/>
+      <path d="M158 211 L138 233 L128 257 L120 258"/>
+      <path d="M180 199 L190 178 L197 174"/>
+    </g>
+
+    <!-- голова -->
+    <ellipse cx="198" cy="194" rx="15" ry="12.5" transform="rotate(-12 198 194)" fill="#2E2522"/>
+    <ellipse cx="192" cy="188" rx="6.5" ry="3" transform="rotate(-12 192 188)" fill="#4A3B35"/>
+    <ellipse cx="205" cy="193" rx="4.2" ry="3.3" transform="rotate(-12 205 193)" fill="#120D0B"/>
+    <circle cx="207" cy="192.2" r="1.3" fill="#FFFFFF"/>
+    <!-- жвалы держат угол тега -->
+    <path d="M209 201 C215 199 216 192 212 187" fill="none" stroke="#2E2522" stroke-width="3"/>
+    <!-- усики -->
+    <path d="M206 183 L218 168 L236 174 C240 176 241 180 239 183" fill="none" stroke="#2E2522" stroke-width="2.6"/>
+    <path d="M199 182 L207 163 L224 162 C228 162 230 165 229 168" fill="none" stroke="#5A4A42" stroke-width="2.2"/>
+  </g>
+  </g>
+</svg>
