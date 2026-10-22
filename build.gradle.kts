@@ -14,9 +14,20 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
+val stagedFiles: Set<String>? =
+    providers.gradleProperty("stagedFiles").orNull
+        ?.split(",")
+        ?.filter { it.isNotBlank() }
+        ?.map { rootProject.file(it).absolutePath.replace('\\', '/') }
+        ?.toSet()
+
+fun Set<String>.containsFile(file: File) = file.absolutePath.replace('\\', '/') in this
+
 subprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
+
+    val staged = stagedFiles
 
     extensions.configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension> {
         buildUponDefaultConfig = true
@@ -38,8 +49,21 @@ subprojects {
         android.set(true)
         filter {
             val buildDir = layout.buildDirectory.get().asFile
+            exclude { element -> element.file.startsWith(buildDir) }
+            if (staged != null) {
+                exclude { element ->
+                    !element.isDirectory &&
+                            element.file.absolutePath.replace('\\', '/') !in staged
+                }
+            }
+        }
+    }
+
+    if (staged != null) {
+        tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
             exclude { element ->
-                element.file.startsWith(buildDir)
+                !element.isDirectory &&
+                        element.file.absolutePath.replace('\\', '/') !in staged
             }
         }
     }
