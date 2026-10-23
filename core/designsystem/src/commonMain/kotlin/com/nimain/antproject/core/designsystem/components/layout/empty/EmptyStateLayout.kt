@@ -1,8 +1,12 @@
 package com.nimain.antproject.core.designsystem.components.layout.empty
 
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ant_project.core.designsystem.generated.resources.Res
 import coil3.compose.AsyncImage
@@ -32,7 +36,14 @@ fun EmptyStateLayout(
                 alpha = 1f,
             )
         },
-        text = text,
+        text = {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        },
     )
 }
 
