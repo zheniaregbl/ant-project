@@ -24,15 +24,11 @@ class KmpFeatureConventionPlugin : Plugin<Project> {
                 }
 
             sourceSets.commonMain.dependencies {
-                implementation(libs.bundle("compose-common"))
                 implementation(libs.bundle("koin-ui"))
 
                 implementation(project(":core:domain"))
                 implementation(project(":core:navigation"))
-            }
-
-            sourceSets.androidMain.dependencies {
-                implementation(libs.lib("compose-uiTooling"))
+                implementation(project(":core:designsystem"))
             }
 
 //            sourceSets.commonTest.dependencies {

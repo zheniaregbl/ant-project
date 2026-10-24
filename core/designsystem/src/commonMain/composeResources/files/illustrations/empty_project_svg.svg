@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 56 370 224" width="740" height="448">
+  <!-- фон -->
+  <path d="M60 250 C30 190 60 110 140 80 C220 50 330 70 365 140 C395 200 370 250 330 262 L80 262 Z" fill="#EEF1F4"/>
+  <ellipse cx="225" cy="262" rx="170" ry="9" fill="#DDE2E8"/>
+
+  <!-- листья справа -->
+  <path d="M388 258 C392 235 398 222 406 212" fill="none" stroke="#4F7A55" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M396 232 C382 226 372 232 370 240 C382 243 391 240 396 232 Z" fill="#6F9C6E"/>
+  <path d="M401 220 C404 206 396 196 388 196 C386 208 392 216 401 220 Z" fill="#86B07F"/>
+
+  <!-- пунктирный контур будущего муравейника -->
+  <g fill="none" stroke="#AEB8C3" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="7 7">
+    <path d="M236 258 C240 204 272 170 306 168 C340 170 372 204 376 258"/>
+    <path d="M290 258 C290 240 322 240 322 258"/>
+  </g>
+
+  <!-- флажок -->
+  <path d="M306 258 L306 128" stroke="#9E5E28" stroke-width="3.4" stroke-linecap="round"/>
+  <path d="M307 130 L340 140 L307 151 Z" fill="#E4A65D"/>
+  <path d="M307 130 L340 140 L307 136 Z" fill="#F0BD7C"/>
+
+  <!-- брёвнышки -->
+  <g stroke-linecap="round">
+    <path d="M206 252 L262 252" stroke="#9E5E28" stroke-width="10"/>
+    <path d="M214 241 L256 241" stroke="#B8702F" stroke-width="10"/>
+    <circle cx="262" cy="252" r="5" fill="#F0BD7C"/>
+    <circle cx="256" cy="241" r="5" fill="#F0BD7C"/>
+    <circle cx="262" cy="252" r="1.6" fill="#C7843F"/>
+    <circle cx="256" cy="241" r="1.6" fill="#C7843F"/>
+  </g>
+
+  <!-- муравей -->
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <!-- дальние лапы -->
+    <g fill="none" stroke="#5A4A42" stroke-width="3.2">
+      <path d="M140 188 L160 214 L156 257 L163 258"/>
+      <path d="M128 197 L118 222 L124 257 L131 258"/>
+      <path d="M152 172 L172 182 L184 194"/>
+    </g>
+    <!-- брюшко -->
+    <ellipse cx="92" cy="216" rx="33" ry="22" transform="rotate(-24 92 216)" fill="#2E2522"/>
+    <ellipse cx="84" cy="206" rx="15" ry="7" transform="rotate(-24 84 206)" fill="#4A3B35"/>
+    <!-- стебелёк -->
+    <ellipse cx="121" cy="198" rx="6" ry="7" fill="#2E2522"/>
+    <!-- грудь -->
+    <ellipse cx="139" cy="180" rx="22" ry="10" transform="rotate(-48 139 180)" fill="#2E2522"/>
+    <ellipse cx="135" cy="181" rx="9" ry="3.5" transform="rotate(-48 135 181)" fill="#4A3B35"/>
+    <!-- ближние лапы -->
+    <g fill="none" stroke="#2E2522" stroke-width="3.6">
+      <path d="M134 190 L108 220 L104 257 L96 258"/>
+      <path d="M144 184 L146 218 L138 257 L131 259"/>
+    </g>
+
+    <!-- чертёж -->
+    <path d="M180 156 L218 164 L212 202 L174 194 Z" fill="#E3EBF4"/>
+    <g fill="none" stroke="#A9BCD3" stroke-width="1.6">
+      <path d="M186 170 L208 175"/>
+      <path d="M184 178 L200 181.5"/>
+      <path d="M190 192 C191 182 203 182 206 190"/>
+    </g>
+    <path d="M180 156 L174 194" stroke="#C9D6E5" stroke-width="6"/>
+    <path d="M218 164 L212 202" stroke="#C9D6E5" stroke-width="6"/>
+
+    <!-- голова, склонена к чертежу -->
+    <ellipse cx="170" cy="150" rx="17" ry="13" transform="rotate(-20 170 150)" fill="#2E2522"/>
+    <ellipse cx="163" cy="148" rx="7" ry="3.4" transform="rotate(-20 163 148)" fill="#4A3B35"/>
+    <ellipse cx="177" cy="151" rx="4.4" ry="3.4" transform="rotate(-20 177 151)" fill="#120D0B"/>
+    <circle cx="179" cy="152.5" r="1.3" fill="#FFFFFF"/>
+    <!-- жвалы -->
+    <path d="M184 158 C189 161 190 165 187 168" fill="none" stroke="#2E2522" stroke-width="3"/>
+    <!-- каска -->
+    <path d="M152 145 C151 130 164 122 176 126 C185 129 189 136 188 142 Z" fill="#E4A65D"/>
+    <path d="M158 131 C164 126 172 126 178 129" fill="none" stroke="#F0BD7C" stroke-width="2.4"/>
+    <path d="M168 124 L170 142" stroke="#C7843F" stroke-width="2"/>
+    <path d="M148 146 L194 140" stroke="#C7843F" stroke-width="3.6"/>
+    <!-- усики -->
+    <path d="M183 142 L194 126 L210 132 C214 134 215 138 213 141" fill="none" stroke="#2E2522" stroke-width="2.6"/>
+    <path d="M178 140 L184 120 L200 118 C204 118 206 121 205 124" fill="none" stroke="#5A4A42" stroke-width="2.2"/>
+    <!-- ближняя передняя лапа держит чертёж -->
+    <path d="M154 170 L170 178 L178 172" fill="none" stroke="#2E2522" stroke-width="3.6"/>
+  </g>
+</svg>

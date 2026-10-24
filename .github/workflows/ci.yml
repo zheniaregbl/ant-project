@@ -10,9 +10,46 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: macos-latest
-    timeout-minutes: 60
+  check:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: lint
+            name: Lint
+            os: ubuntu-latest
+            tasks: ktlintCheck detekt
+
+          - id: test-jvm
+            name: Tests (Desktop + Android)
+            os: ubuntu-latest
+            tasks: allTests
+
+          - id: test-ios
+            name: Tests (iOS)
+            os: macos-latest
+            native: true
+            tasks: iosSimulatorArm64Test
+
+          - id: build-android
+            name: Build Android
+            os: ubuntu-latest
+            tasks: :androidApp:assembleDebug
+
+          - id: build-desktop
+            name: Build Desktop
+            os: ubuntu-latest
+            tasks: :desktopApp:assemble
+
+          - id: build-ios
+            name: Build iOS framework
+            os: macos-latest
+            native: true
+            tasks: :shared:linkDebugFrameworkIosSimulatorArm64
 
     steps:
       - uses: actions/checkout@v4
@@ -25,30 +62,19 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Cache Kotlin/Native toolchain
+        if: matrix.native
         uses: actions/cache@v4
         with:
           path: ~/.konan
           key: konan-${{ runner.os }}-${{ hashFiles('gradle/libs.versions.toml') }}
           restore-keys: konan-${{ runner.os }}-
 
-      - name: Lint
-        run: ./gradlew ktlintCheck detekt
-
-      - name: Tests
-        run: ./gradlew allTests
-
-      - name: Build Android
-        run: ./gradlew :androidApp:assembleDebug
-
-      - name: Build Desktop
-        run: ./gradlew :desktopApp:assemble
-
-      - name: Build iOS framework
-        run: ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
+      - name: Run ${{ matrix.tasks }}
+        run: ./gradlew ${{ matrix.tasks }}
 
       - name: Upload reports on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: reports
+          name: reports-${{ matrix.id }}
           path: '**/build/reports/'
