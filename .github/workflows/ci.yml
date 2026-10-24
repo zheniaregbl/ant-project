@@ -16,7 +16,6 @@ jobs:
     timeout-minutes: 45
 
     strategy:
-      # Один упавший job не отменяет остальные — сразу видно все проблемы
       fail-fast: false
       matrix:
         include:
@@ -28,8 +27,7 @@ jobs:
           - id: test-jvm
             name: Tests (Desktop + Android)
             os: ubuntu-latest
-            # Проверь имена: jvm("desktop") -> desktopTest, jvm() -> jvmTest
-            tasks: desktopTest testDebugUnitTest
+            tasks: allTests
 
           - id: test-ios
             name: Tests (iOS)
@@ -61,7 +59,6 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      # Кэш Gradle пишется только с master, PR-ы его читают
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Cache Kotlin/Native toolchain
