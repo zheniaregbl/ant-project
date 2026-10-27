@@ -19,7 +19,7 @@ fun NavGraphBuilder.tasksGraph(navController: NavController) {
         composable<Inbox> {
             InboxScreen()
         }
-        composable<Scheduled> { ScheduledScreen(modifier = Modifier.fillMaxSize()) }
+        composable<Today> { ScheduledScreen(modifier = Modifier.fillMaxSize()) }
         composable<Projects> { entry ->
             val navActions = rememberNavActions(navController, entry)
             ProjectListScreen(
