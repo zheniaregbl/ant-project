@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -18,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.nimain.antproject.core.navigation.NavActions
 import com.nimain.antproject.navigation.TopLevelRoute
 import com.nimain.antproject.tasks.navigation.TaskDetail
+import kotlin.collections.asReversed
 
 @Stable
 class AntAppState(
@@ -32,14 +34,7 @@ class AntAppState(
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
     val currentTopLevelRoute: TopLevelRoute?
-        @Composable get() {
-            val backStack = navController.currentBackStack.collectAsState().value
-            return backStack.asReversed().firstNotNullOfOrNull { entry ->
-                topLevelRoutes.firstOrNull { tab ->
-                    entry.destination.hasRoute(tab.route::class)
-                }
-            }
-        }
+        @Composable get() = findCurrentTab(navController.currentBackStack.collectAsState().value)
 
     val showBottomBar: Boolean
         @Composable get() {
@@ -49,9 +44,22 @@ class AntAppState(
             }
         }
 
+    private fun findCurrentTab(backStack: List<NavBackStackEntry>): TopLevelRoute? =
+        backStack.asReversed().firstNotNullOfOrNull { e ->
+            topLevelRoutes.firstOrNull { e.destination.hasRoute(it.route::class) }
+        }
+
     fun navigateToTab(tab: TopLevelRoute) {
         val entry = navController.currentBackStackEntry ?: return
-        NavActions(navController, entry).to(tab.route)
+        val current = entry.destination
+        when {
+            current.hasRoute(tab.route::class) -> Unit
+
+            findCurrentTab(navController.currentBackStack.value) == tab ->
+                navController.popBackStack(tab.route, inclusive = false)
+
+            else -> NavActions(navController, entry).to(tab.route)
+        }
     }
 
     fun openQuickAdd() {
