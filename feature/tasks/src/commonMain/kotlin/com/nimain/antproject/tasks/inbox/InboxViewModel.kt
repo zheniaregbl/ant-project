@@ -34,6 +34,12 @@ internal class InboxViewModel(
         }
     }
 
+    fun onDeleteTask(taskId: TaskId) {
+        viewModelScope.launch {
+            taskRepository.removeTask(taskId)
+        }
+    }
+
     fun onCompleteTask(id: TaskId) {
         viewModelScope.launch {
             try {
