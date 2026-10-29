@@ -5,15 +5,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nimain.antproject.core.designsystem.components.bottomsheet.AntBottomSheet
@@ -96,27 +98,30 @@ private fun QuickAddSheetContent(
     }
 }
 
-// @Composable
-// private fun QuickAddSheetContentCatalog() {
-//    Surface(color = AntTheme.colors.tabBar) {
-//        QuickAddSheetContent(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(horizontal = AntTheme.spacing.screenHorizontal),
-//            isSubmitted = false,
-//            onSubmit = {}
-//        )
-//    }
-// }
-//
-// @Preview
-// @Composable
-// private fun QuickAddSheetContentLightPreview() {
-//    AntTheme(darkTheme = false) { QuickAddSheetContentCatalog() }
-// }
-//
-// @Preview
-// @Composable
-// private fun QuickAddSheetContentDarkPreview() {
-//    AntTheme(darkTheme = true) { QuickAddSheetContentCatalog() }
-// }
+@Composable
+private fun QuickAddSheetContentCatalog() {
+    Surface(color = AntTheme.colors.tabBar) {
+        QuickAddSheetContent(
+            titleState = rememberTextFieldState(),
+            canSubmit = true,
+            isFailed = false,
+            onSubmit = {},
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AntTheme.spacing.screenHorizontal),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun QuickAddSheetContentLightPreview() {
+    AntTheme(darkTheme = false) { QuickAddSheetContentCatalog() }
+}
+
+@Preview
+@Composable
+private fun QuickAddSheetContentDarkPreview() {
+    AntTheme(darkTheme = true) { QuickAddSheetContentCatalog() }
+}
