@@ -1,5 +1,6 @@
 package com.nimain.antproject.core.data.repository
 
+import androidx.sqlite.SQLiteException
 import com.nimain.antproject.core.data.mapper.toEntity
 import com.nimain.antproject.core.data.mapper.toTaskId
 import com.nimain.antproject.core.data.mapper.toUuid
@@ -13,6 +14,7 @@ import com.nimain.antproject.core.domain.tasks.TaskDetail
 import com.nimain.antproject.core.domain.tasks.TaskDraft
 import com.nimain.antproject.core.domain.tasks.TaskId
 import com.nimain.antproject.core.domain.tasks.TaskRepository
+import com.nimain.antproject.core.domain.tasks.result.CreateTaskResult
 import kotlinx.coroutines.flow.Flow
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
@@ -31,20 +33,23 @@ internal class DefaultTaskRepository(
     override suspend fun createTask(
         draft: TaskDraft,
         projectId: ProjectId?,
-    ): TaskId {
-        val projectUuid = projectId?.let { requireProjectExists(it) }
-        val id = Uuid.generateV7()
-        val now = clock.now()
-        taskDao.insert(
-            draft.toEntity(
-                id = id,
-                projectId = projectUuid,
-                position = now.toEpochMilliseconds().toDouble(),
-                now = now,
-            ),
-        )
-        return id.toTaskId()
-    }
+    ): CreateTaskResult =
+        try {
+            val projectUuid = projectId?.let { requireProjectExists(it) }
+            val id = Uuid.generateV7()
+            val now = clock.now()
+            taskDao.insert(
+                draft.toEntity(
+                    id = id,
+                    projectId = projectUuid,
+                    position = now.toEpochMilliseconds().toDouble(),
+                    now = now,
+                ),
+            )
+            CreateTaskResult.Success(id.toTaskId())
+        } catch (_: SQLiteException) {
+            CreateTaskResult.Failure
+        }
 
     override suspend fun updateTask(
         id: TaskId,
