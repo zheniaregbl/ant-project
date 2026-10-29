@@ -26,6 +26,7 @@ import ant_project.feature.tasks.generated.resources.Res
 import ant_project.feature.tasks.generated.resources.moon_svg
 import com.nimain.antproject.core.designsystem.components.AntCaption
 import com.nimain.antproject.core.designsystem.components.chip.filter.AntFilterChip
+import com.nimain.antproject.core.designsystem.components.dialog.ConfirmDialog
 import com.nimain.antproject.core.designsystem.components.iconbutton.AntIconButton
 import com.nimain.antproject.core.designsystem.components.layout.LocalBottomBarPadding
 import com.nimain.antproject.core.designsystem.components.layout.empty.EmptyIllustration
@@ -45,8 +46,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun InboxScreen(modifier: Modifier = Modifier) {
     val viewModel = koinViewModel<InboxViewModel>()
-    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
     InboxContent(
         state = state,
         onDeleteTask = viewModel::onDeleteTask,
@@ -60,28 +61,17 @@ internal fun InboxContent(
     onDeleteTask: (taskId: TaskId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var actionTaskId by rememberSaveable { mutableStateOf<TaskId?>(null) }
+    var menuTaskId by rememberSaveable { mutableStateOf<TaskId?>(null) }
+    var deleteTaskId by rememberSaveable { mutableStateOf<TaskId?>(null) }
 
     Scaffold(modifier = modifier) { padding ->
         val top = padding.calculateTopPadding()
 
         Column(modifier = Modifier.fillMaxSize()) {
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = top)
-                        .padding(horizontal = AntTheme.spacing.screenHorizontal),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                AntCaption(text = "${state.tasks.size} задач")
-                AntIconButton(
-                    icon = painterResource(Res.drawable.moon_svg),
-                    contentDescription = "",
-                    onClick = {},
-                )
-            }
+            HeaderSection(
+                modifier = Modifier.padding(top = top),
+                state = state,
+            )
             Text(
                 modifier =
                     Modifier
@@ -94,17 +84,54 @@ internal fun InboxContent(
             TasksListSection(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
-                onLongClickTask = { actionTaskId = it },
+                onLongClickTask = { menuTaskId = it },
             )
         }
     }
 
-    val actionTask = state.tasks.find { it.id == actionTaskId }
-    if (actionTask != null) {
+    val menuTask = state.tasks.find { it.id == menuTaskId }
+    if (menuTask != null) {
         TaskActionsSheet(
-            title = actionTask.title,
-            onDelete = { onDeleteTask(actionTask.id) },
-            onDismiss = { actionTaskId = null },
+            title = menuTask.title,
+            onDelete = { deleteTaskId = menuTask.id },
+            onDismiss = { menuTaskId = null },
+        )
+    }
+
+    val deleteTask = state.tasks.find { it.id == deleteTaskId }
+    if (deleteTask != null) {
+        ConfirmDialog(
+            title = "Удалить задачу?",
+            message = "«${deleteTask.title}» будет удалена без возможности восстановления.",
+            confirmText = "Удалить",
+            dismissText = "Отменить",
+            onConfirm = {
+                onDeleteTask(deleteTask.id)
+                deleteTaskId = null
+            },
+            onDismiss = { deleteTaskId = null },
+        )
+    }
+}
+
+@Composable
+private fun HeaderSection(
+    state: InboxUiState,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(horizontal = AntTheme.spacing.screenHorizontal),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        AntCaption(text = "${state.tasks.size} задач")
+        AntIconButton(
+            icon = painterResource(Res.drawable.moon_svg),
+            contentDescription = "",
+            onClick = {},
         )
     }
 }
