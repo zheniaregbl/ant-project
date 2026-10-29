@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +38,7 @@ import com.nimain.antproject.core.domain.tasks.Priority
 import com.nimain.antproject.core.domain.tasks.TaskId
 import com.nimain.antproject.core.domain.tasks.TaskListItem
 import com.nimain.antproject.core.domain.tasks.TaskListItemStatus
+import com.nimain.antproject.tasks.components.TaskActionsSheet
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -47,6 +49,7 @@ fun InboxScreen(modifier: Modifier = Modifier) {
 
     InboxContent(
         state = state,
+        onDeleteTask = viewModel::onDeleteTask,
         modifier = modifier,
     )
 }
@@ -54,10 +57,10 @@ fun InboxScreen(modifier: Modifier = Modifier) {
 @Composable
 internal fun InboxContent(
     state: InboxUiState,
+    onDeleteTask: (taskId: TaskId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val list = listOf("Все", "Просроченные", "Сегодня")
-    var selectedIndex by remember { mutableStateOf(0) }
+    var actionTaskId by rememberSaveable { mutableStateOf<TaskId?>(null) }
 
     Scaffold(modifier = modifier) { padding ->
         val top = padding.calculateTopPadding()
@@ -87,26 +90,44 @@ internal fun InboxContent(
                 text = "Входящие",
                 style = MaterialTheme.typography.displayMedium,
             )
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = 20.dp)
-                        .padding(horizontal = AntTheme.spacing.screenHorizontal),
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                list.forEachIndexed { index, label ->
-                    AntFilterChip(
-                        selected = selectedIndex == index,
-                        onClick = { selectedIndex = index },
-                        text = label,
-                    )
-                }
-            }
+            FilterSection()
             TasksListSection(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
+                onLongClickTask = { actionTaskId = it },
+            )
+        }
+    }
+
+    val actionTask = state.tasks.find { it.id == actionTaskId }
+    if (actionTask != null) {
+        TaskActionsSheet(
+            title = actionTask.title,
+            onDelete = { onDeleteTask(actionTask.id) },
+            onDismiss = { actionTaskId = null },
+        )
+    }
+}
+
+@Composable
+private fun FilterSection(modifier: Modifier = Modifier) {
+    val list = listOf("Все", "Просроченные", "Сегодня")
+    var selectedIndex by remember { mutableStateOf(0) }
+
+    Row(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp)
+                .padding(horizontal = AntTheme.spacing.screenHorizontal),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        list.forEachIndexed { index, label ->
+            AntFilterChip(
+                selected = selectedIndex == index,
+                onClick = { selectedIndex = index },
+                text = label,
             )
         }
     }
@@ -115,6 +136,7 @@ internal fun InboxContent(
 @Composable
 private fun TasksListSection(
     state: InboxUiState,
+    onLongClickTask: (TaskId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     if (state.isLoading) {
@@ -131,7 +153,7 @@ private fun TasksListSection(
                 TaskRow(
                     model = TaskRowModel(title = it.title),
                     onClick = {},
-                    onLongClick = {},
+                    onLongClick = { onLongClickTask(it.id) },
                     onCheckedChange = {},
                 )
             }
@@ -139,46 +161,44 @@ private fun TasksListSection(
     }
 }
 
-@Preview
 @Composable
-private fun InboxContentLightPreview() {
-    AntTheme(darkTheme = false) {
-        Scaffold(containerColor = MaterialTheme.colorScheme.background) {
-            InboxContent(
-                state =
-                    InboxUiState(
-                        tasks =
-                            listOf(
-                                TaskListItem(
-                                    id = TaskId("task-1"),
-                                    title = "Задача 1",
-                                    projectName = null,
-                                    isRecurring = false,
-                                    status = TaskListItemStatus.Active,
-                                    priority = Priority.None,
-                                    doneSubtasks = 0,
-                                    totalSubtasks = 0,
-                                    tags = emptyList(),
-                                    dueDate = null,
-                                    dueTime = null,
-                                ),
+private fun InboxScreenCatalog() {
+    Scaffold(containerColor = MaterialTheme.colorScheme.background) {
+        InboxContent(
+            state =
+                InboxUiState(
+                    tasks =
+                        listOf(
+                            TaskListItem(
+                                id = TaskId("task-1"),
+                                title = "Задача 1",
+                                projectName = null,
+                                isRecurring = false,
+                                status = TaskListItemStatus.Active,
+                                priority = Priority.None,
+                                doneSubtasks = 0,
+                                totalSubtasks = 0,
+                                tags = emptyList(),
+                                dueDate = null,
+                                dueTime = null,
                             ),
-                    ),
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
+                        ),
+                    isLoading = false,
+                ),
+            onDeleteTask = {},
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
 
 @Preview
 @Composable
+private fun InboxContentLightPreview() {
+    AntTheme(darkTheme = false) { InboxScreenCatalog() }
+}
+
+@Preview
+@Composable
 private fun InboxContentDarkPreview() {
-    AntTheme(darkTheme = true) {
-        Scaffold(containerColor = MaterialTheme.colorScheme.background) {
-            InboxContent(
-                state = InboxUiState(),
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
-    }
+    AntTheme(darkTheme = true) { InboxScreenCatalog() }
 }
