@@ -7,6 +7,7 @@ import com.nimain.antproject.core.domain.tasks.TaskDraft
 import com.nimain.antproject.core.domain.tasks.TaskId
 import com.nimain.antproject.core.domain.tasks.TaskListRepository
 import com.nimain.antproject.core.domain.tasks.TaskRepository
+import com.nimain.antproject.core.domain.tasks.result.TasksResult
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -20,12 +21,17 @@ internal class InboxViewModel(
     val uiState: StateFlow<InboxUiState> =
         taskListRepository
             .observeInboxTasks()
-            .map { tasks -> InboxUiState(tasks = tasks, isLoading = false) }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
-                initialValue = InboxUiState(),
-            )
+            .map { result ->
+                when (result) {
+                    is TasksResult.Success ->
+                        if (result.tasks.isEmpty()) {
+                            InboxUiState.Empty
+                        } else {
+                            InboxUiState.Content(result.tasks)
+                        }
+                    TasksResult.Failure -> InboxUiState.Error
+                }
+            }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), InboxUiState.Loading)
 
     fun onCreateTask(title: String) {
         if (title.isBlank()) return

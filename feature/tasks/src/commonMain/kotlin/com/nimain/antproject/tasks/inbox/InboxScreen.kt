@@ -3,6 +3,7 @@ package com.nimain.antproject.tasks.inbox
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -89,7 +90,10 @@ internal fun InboxContent(
         }
     }
 
-    val menuTask = state.tasks.find { it.id == menuTaskId }
+    val tasks = (state as? InboxUiState.Content)?.tasks.orEmpty()
+    val menuTask = tasks.find { it.id == menuTaskId }
+    val deleteTask = tasks.find { it.id == deleteTaskId }
+
     if (menuTask != null) {
         TaskActionsSheet(
             title = menuTask.title,
@@ -98,7 +102,6 @@ internal fun InboxContent(
         )
     }
 
-    val deleteTask = state.tasks.find { it.id == deleteTaskId }
     if (deleteTask != null) {
         ConfirmDialog(
             title = "Удалить задачу?",
@@ -127,7 +130,13 @@ private fun HeaderSection(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        AntCaption(text = "${state.tasks.size} задач")
+        val countText =
+            when (state) {
+                is InboxUiState.Content -> "${state.tasks.size} задач"
+                InboxUiState.Empty -> "0 задач"
+                InboxUiState.Loading, InboxUiState.Error -> null
+            }
+        if (countText != null) AntCaption(text = countText) else Spacer(Modifier)
         AntIconButton(
             icon = painterResource(Res.drawable.moon_svg),
             contentDescription = "",
@@ -166,24 +175,35 @@ private fun TasksListSection(
     onLongClickTask: (TaskId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (state.isLoading) {
-        LoadingStateLayout(modifier = modifier)
-    } else if (state.tasks.isEmpty()) {
-        EmptyStateLayout(
-            modifier = modifier.padding(bottom = LocalBottomBarPadding.current),
-            illustration = EmptyIllustration.Inbox,
-            text = "Входящие разобраны",
-        )
-    } else {
-        LazyColumn(modifier = modifier.padding(top = 14.dp)) {
-            items(items = state.tasks) {
-                TaskRow(
-                    model = TaskRowModel(title = it.title),
-                    onClick = {},
-                    onLongClick = { onLongClickTask(it.id) },
-                    onCheckedChange = {},
-                )
+    when (state) {
+        is InboxUiState.Content -> {
+            LazyColumn(modifier = modifier.padding(top = 14.dp)) {
+                items(items = state.tasks) {
+                    TaskRow(
+                        model = TaskRowModel(title = it.title),
+                        onClick = {},
+                        onLongClick = { onLongClickTask(it.id) },
+                        onCheckedChange = {},
+                    )
+                }
             }
+        }
+        InboxUiState.Empty -> {
+            EmptyStateLayout(
+                modifier = modifier.padding(bottom = LocalBottomBarPadding.current),
+                illustration = EmptyIllustration.Inbox,
+                text = "Входящие разобраны",
+            )
+        }
+        InboxUiState.Error -> {
+            EmptyStateLayout(
+                modifier = modifier.padding(bottom = LocalBottomBarPadding.current),
+                illustration = EmptyIllustration.Inbox,
+                text = "Не удалось загрузить задачи",
+            )
+        }
+        InboxUiState.Loading -> {
+            LoadingStateLayout(modifier = modifier)
         }
     }
 }
@@ -193,24 +213,22 @@ private fun InboxScreenCatalog() {
     Scaffold(containerColor = MaterialTheme.colorScheme.background) {
         InboxContent(
             state =
-                InboxUiState(
-                    tasks =
-                        listOf(
-                            TaskListItem(
-                                id = TaskId("task-1"),
-                                title = "Задача 1",
-                                projectName = null,
-                                isRecurring = false,
-                                status = TaskListItemStatus.Active,
-                                priority = Priority.None,
-                                doneSubtasks = 0,
-                                totalSubtasks = 0,
-                                tags = emptyList(),
-                                dueDate = null,
-                                dueTime = null,
-                            ),
+                InboxUiState.Content(
+                    listOf(
+                        TaskListItem(
+                            id = TaskId("task-1"),
+                            title = "Задача 1",
+                            projectName = null,
+                            isRecurring = false,
+                            status = TaskListItemStatus.Active,
+                            priority = Priority.None,
+                            doneSubtasks = 0,
+                            totalSubtasks = 0,
+                            tags = emptyList(),
+                            dueDate = null,
+                            dueTime = null,
                         ),
-                    isLoading = false,
+                    ),
                 ),
             onDeleteTask = {},
             modifier = Modifier.fillMaxSize(),

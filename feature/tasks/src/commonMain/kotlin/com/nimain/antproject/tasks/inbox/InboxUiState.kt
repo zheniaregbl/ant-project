@@ -2,7 +2,14 @@ package com.nimain.antproject.tasks.inbox
 
 import com.nimain.antproject.core.domain.tasks.TaskListItem
 
-internal data class InboxUiState(
-    val tasks: List<TaskListItem> = emptyList(),
-    val isLoading: Boolean = true,
-)
+internal sealed interface InboxUiState {
+    data object Loading : InboxUiState
+
+    data object Empty : InboxUiState
+
+    data class Content(
+        val tasks: List<TaskListItem>,
+    ) : InboxUiState
+
+    data object Error : InboxUiState
+}
