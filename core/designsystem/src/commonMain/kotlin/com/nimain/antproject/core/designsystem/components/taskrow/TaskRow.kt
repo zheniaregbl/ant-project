@@ -171,8 +171,11 @@ private fun CircleCheckboxSection(
         modifier =
             modifier
                 .fillMaxHeight()
-                .clickable(onClick = onClick)
-                .padding(
+                .clickable(
+                    onClick = onClick,
+                    indication = null,
+                    interactionSource = null,
+                ).padding(
                     start = AntTheme.spacing.screenHorizontal,
                     top = AntTheme.spacing.listItemVertical,
                     end = AntTheme.spacing.listItemVertical,
