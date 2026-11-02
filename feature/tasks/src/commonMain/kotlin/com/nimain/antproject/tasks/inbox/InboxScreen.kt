@@ -1,5 +1,13 @@
 package com.nimain.antproject.tasks.inbox
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ant_project.feature.tasks.generated.resources.Res
@@ -45,6 +54,9 @@ import com.nimain.antproject.tasks.components.TaskActionsSheet
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
+private const val ITEM_FADE_IN_DELAY_MILLIS = 200
+private const val ITEM_FADE_IN_DURATION_MILLIS = 250
+private const val ITEM_FADE_OUT_DURATION_MILLIS = 150
 private val TopListTaskPadding = 14.dp
 private val BottomListTaskPadding = 30.dp
 
@@ -183,46 +195,85 @@ private fun TasksListSection(
     onComplete: (TaskListItem, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    when (state) {
-        is InboxUiState.Content -> {
-            LazyColumn(
-                contentPadding =
-                    PaddingValues(
-                        top = TopListTaskPadding,
-                        bottom = BottomListTaskPadding + LocalBottomBarPadding.current,
-                    ),
-            ) {
-                itemsIndexed(items = state.tasks) { index, item ->
-                    TaskRow(
-                        modifier = Modifier.animateItem(),
-                        model =
-                            TaskRowModel(
-                                title = item.title,
-                                isDone = item.status == TaskListItemStatus.Done,
-                            ),
-                        onClick = {},
-                        onLongClick = { onLongClickTask(item.id) },
-                        onCheckedChange = { onComplete(item, index) },
-                    )
-                }
+    AnimatedContent(
+        targetState = state,
+        contentKey = { it::class },
+        transitionSpec = {
+            fadeIn(animationSpec = tween(220)) togetherWith fadeOut(animationSpec = tween(120)) using null
+        },
+    ) { contentState ->
+        when (contentState) {
+            is InboxUiState.Content -> {
+                TaskList(
+                    state = contentState,
+                    onLongClickTask = onLongClickTask,
+                    onComplete = onComplete,
+                )
+            }
+            InboxUiState.Empty -> {
+                EmptyStateLayout(
+                    modifier = modifier.padding(bottom = LocalBottomBarPadding.current),
+                    illustration = EmptyIllustration.Inbox,
+                    text = "Входящие разобраны",
+                )
+            }
+            InboxUiState.Error -> {
+                EmptyStateLayout(
+                    modifier = modifier.padding(bottom = LocalBottomBarPadding.current),
+                    illustration = EmptyIllustration.Inbox,
+                    text = "Не удалось загрузить задачи",
+                )
+            }
+            InboxUiState.Loading -> {
+                LoadingStateLayout(modifier = modifier)
             }
         }
-        InboxUiState.Empty -> {
-            EmptyStateLayout(
-                modifier = modifier.padding(bottom = LocalBottomBarPadding.current),
-                illustration = EmptyIllustration.Inbox,
-                text = "Входящие разобраны",
+    }
+}
+
+@Composable
+private fun TaskList(
+    state: InboxUiState.Content,
+    onLongClickTask: (TaskId) -> Unit,
+    onComplete: (TaskListItem, Int) -> Unit,
+) {
+    LazyColumn(
+        contentPadding =
+            PaddingValues(
+                top = TopListTaskPadding,
+                bottom = BottomListTaskPadding + LocalBottomBarPadding.current,
+            ),
+    ) {
+        itemsIndexed(
+            items = state.tasks,
+            key = { _, item -> item.id.value },
+        ) { index, item ->
+            TaskRow(
+                modifier =
+                    Modifier
+                        .animateItem(
+                            fadeInSpec =
+                                tween(
+                                    durationMillis = ITEM_FADE_IN_DURATION_MILLIS,
+                                    delayMillis = ITEM_FADE_IN_DELAY_MILLIS,
+                                ),
+                            placementSpec =
+                                spring(
+                                    dampingRatio = Spring.DampingRatioLowBouncy,
+                                    stiffness = Spring.StiffnessMediumLow,
+                                    visibilityThreshold = IntOffset.VisibilityThreshold,
+                                ),
+                            fadeOutSpec = tween(durationMillis = ITEM_FADE_OUT_DURATION_MILLIS),
+                        ),
+                model =
+                    TaskRowModel(
+                        title = item.title,
+                        isDone = item.status == TaskListItemStatus.Done,
+                    ),
+                onClick = {},
+                onLongClick = { onLongClickTask(item.id) },
+                onCheckedChange = { onComplete(item, index) },
             )
-        }
-        InboxUiState.Error -> {
-            EmptyStateLayout(
-                modifier = modifier.padding(bottom = LocalBottomBarPadding.current),
-                illustration = EmptyIllustration.Inbox,
-                text = "Не удалось загрузить задачи",
-            )
-        }
-        InboxUiState.Loading -> {
-            LoadingStateLayout(modifier = modifier)
         }
     }
 }
