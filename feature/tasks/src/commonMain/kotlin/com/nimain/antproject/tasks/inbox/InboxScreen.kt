@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -56,6 +56,7 @@ fun InboxScreen(modifier: Modifier = Modifier) {
     InboxContent(
         state = state,
         onDeleteTask = viewModel::onDeleteTask,
+        onCompleteTask = viewModel::onCompleteTask,
         modifier = modifier,
     )
 }
@@ -64,6 +65,7 @@ fun InboxScreen(modifier: Modifier = Modifier) {
 internal fun InboxContent(
     state: InboxUiState,
     onDeleteTask: (taskId: TaskId) -> Unit,
+    onCompleteTask: (TaskListItem, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var menuTaskId by rememberSaveable { mutableStateOf<TaskId?>(null) }
@@ -90,6 +92,7 @@ internal fun InboxContent(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
                 onLongClickTask = { menuTaskId = it },
+                onComplete = onCompleteTask,
             )
         }
     }
@@ -177,6 +180,7 @@ private fun FilterSection(modifier: Modifier = Modifier) {
 private fun TasksListSection(
     state: InboxUiState,
     onLongClickTask: (TaskId) -> Unit,
+    onComplete: (TaskListItem, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (state) {
@@ -188,12 +192,17 @@ private fun TasksListSection(
                         bottom = BottomListTaskPadding + LocalBottomBarPadding.current,
                     ),
             ) {
-                items(items = state.tasks) {
+                itemsIndexed(items = state.tasks) { index, item ->
                     TaskRow(
-                        model = TaskRowModel(title = it.title),
+                        modifier = Modifier.animateItem(),
+                        model =
+                            TaskRowModel(
+                                title = item.title,
+                                isDone = item.status == TaskListItemStatus.Done,
+                            ),
                         onClick = {},
-                        onLongClick = { onLongClickTask(it.id) },
-                        onCheckedChange = {},
+                        onLongClick = { onLongClickTask(item.id) },
+                        onCheckedChange = { onComplete(item, index) },
                     )
                 }
             }
@@ -241,6 +250,7 @@ private fun InboxScreenCatalog() {
                     ),
                 ),
             onDeleteTask = {},
+            onCompleteTask = { _, _ -> },
             modifier = Modifier.fillMaxSize(),
         )
     }
