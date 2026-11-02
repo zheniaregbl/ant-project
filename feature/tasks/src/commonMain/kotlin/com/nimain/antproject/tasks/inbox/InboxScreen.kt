@@ -2,6 +2,7 @@ package com.nimain.antproject.tasks.inbox
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,11 +45,14 @@ import com.nimain.antproject.tasks.components.TaskActionsSheet
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
+private val TopListTaskPadding = 14.dp
+private val BottomListTaskPadding = 30.dp
+
 @Composable
 fun InboxScreen(modifier: Modifier = Modifier) {
     val viewModel = koinViewModel<InboxViewModel>()
-
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
     InboxContent(
         state = state,
         onDeleteTask = viewModel::onDeleteTask,
@@ -177,7 +181,13 @@ private fun TasksListSection(
 ) {
     when (state) {
         is InboxUiState.Content -> {
-            LazyColumn(modifier = modifier.padding(top = 14.dp)) {
+            LazyColumn(
+                contentPadding =
+                    PaddingValues(
+                        top = TopListTaskPadding,
+                        bottom = BottomListTaskPadding + LocalBottomBarPadding.current,
+                    ),
+            ) {
                 items(items = state.tasks) {
                     TaskRow(
                         model = TaskRowModel(title = it.title),
