@@ -58,7 +58,7 @@ class AntAppState(
             findCurrentTab(navController.currentBackStack.value) == tab ->
                 navController.popBackStack(tab.route, inclusive = false)
 
-            else -> NavActions(navController, entry).to(tab.route)
+            else -> NavActions(navController, entry).toTab(tab.route)
         }
     }
 
