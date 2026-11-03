@@ -196,6 +196,7 @@ private fun TasksListSection(
     modifier: Modifier = Modifier,
 ) {
     AnimatedContent(
+        modifier = modifier,
         targetState = state,
         contentKey = { it::class },
         transitionSpec = {
@@ -205,6 +206,7 @@ private fun TasksListSection(
         when (contentState) {
             is InboxUiState.Content -> {
                 TaskList(
+                    modifier = Modifier.fillMaxSize(),
                     state = contentState,
                     onLongClickTask = onLongClickTask,
                     onComplete = onComplete,
@@ -212,20 +214,26 @@ private fun TasksListSection(
             }
             InboxUiState.Empty -> {
                 EmptyStateLayout(
-                    modifier = modifier.padding(bottom = LocalBottomBarPadding.current),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(bottom = LocalBottomBarPadding.current),
                     illustration = EmptyIllustration.Inbox,
                     text = "Входящие разобраны",
                 )
             }
             InboxUiState.Error -> {
                 EmptyStateLayout(
-                    modifier = modifier.padding(bottom = LocalBottomBarPadding.current),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(bottom = LocalBottomBarPadding.current),
                     illustration = EmptyIllustration.Inbox,
                     text = "Не удалось загрузить задачи",
                 )
             }
             InboxUiState.Loading -> {
-                LoadingStateLayout(modifier = modifier)
+                LoadingStateLayout(modifier = Modifier.fillMaxSize())
             }
         }
     }
@@ -236,8 +244,10 @@ private fun TaskList(
     state: InboxUiState.Content,
     onLongClickTask: (TaskId) -> Unit,
     onComplete: (TaskListItem, Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
+        modifier = modifier,
         contentPadding =
             PaddingValues(
                 top = TopListTaskPadding,
