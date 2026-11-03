@@ -47,8 +47,8 @@ class QuickAddViewModel(
 
     fun onCreatedHandled() {
         if (status is SubmitStatus.Created) {
-            title.clearText()
             status = SubmitStatus.Idle
         }
+        title.clearText()
     }
 }
