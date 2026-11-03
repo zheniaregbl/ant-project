@@ -17,7 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -67,8 +67,7 @@ fun InboxScreen(modifier: Modifier = Modifier) {
 
     InboxContent(
         state = state,
-        onDeleteTask = viewModel::onDeleteTask,
-        onCompleteTask = viewModel::onCompleteTask,
+        onAction = viewModel::onAction,
         modifier = modifier,
     )
 }
@@ -76,8 +75,7 @@ fun InboxScreen(modifier: Modifier = Modifier) {
 @Composable
 internal fun InboxContent(
     state: InboxUiState,
-    onDeleteTask: (taskId: TaskId) -> Unit,
-    onCompleteTask: (TaskListItem, Int) -> Unit,
+    onAction: (InboxAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var menuTaskId by rememberSaveable { mutableStateOf<TaskId?>(null) }
@@ -104,7 +102,7 @@ internal fun InboxContent(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
                 onLongClickTask = { menuTaskId = it },
-                onComplete = onCompleteTask,
+                onComplete = { onAction(InboxAction.TaskChecked(it)) },
             )
         }
     }
@@ -128,7 +126,7 @@ internal fun InboxContent(
             confirmText = "Удалить",
             dismissText = "Отменить",
             onConfirm = {
-                onDeleteTask(deleteTask.id)
+                onAction(InboxAction.DeleteTaskConfirmed(deleteTask.id))
                 deleteTaskId = null
             },
             onDismiss = { deleteTaskId = null },
@@ -192,7 +190,7 @@ private fun FilterSection(modifier: Modifier = Modifier) {
 private fun TasksListSection(
     state: InboxUiState,
     onLongClickTask: (TaskId) -> Unit,
-    onComplete: (TaskListItem, Int) -> Unit,
+    onComplete: (TaskId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     AnimatedContent(
@@ -243,7 +241,7 @@ private fun TasksListSection(
 private fun TaskList(
     state: InboxUiState.Content,
     onLongClickTask: (TaskId) -> Unit,
-    onComplete: (TaskListItem, Int) -> Unit,
+    onComplete: (TaskId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -254,10 +252,10 @@ private fun TaskList(
                 bottom = BottomListTaskPadding + LocalBottomBarPadding.current,
             ),
     ) {
-        itemsIndexed(
+        items(
             items = state.tasks,
-            key = { _, item -> item.id.value },
-        ) { index, item ->
+            key = { item -> item.id.value },
+        ) { item ->
             TaskRow(
                 modifier =
                     Modifier
@@ -282,7 +280,7 @@ private fun TaskList(
                     ),
                 onClick = {},
                 onLongClick = { onLongClickTask(item.id) },
-                onCheckedChange = { onComplete(item, index) },
+                onCheckedChange = { onComplete(item.id) },
             )
         }
     }
@@ -310,8 +308,7 @@ private fun InboxScreenCatalog() {
                         ),
                     ),
                 ),
-            onDeleteTask = {},
-            onCompleteTask = { _, _ -> },
+            onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
     }

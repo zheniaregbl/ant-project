@@ -3,7 +3,6 @@ package com.nimain.antproject.tasks.inbox
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nimain.antproject.core.domain.common.exception.TaskNotFoundException
-import com.nimain.antproject.core.domain.tasks.TaskDraft
 import com.nimain.antproject.core.domain.tasks.TaskId
 import com.nimain.antproject.core.domain.tasks.TaskListItem
 import com.nimain.antproject.core.domain.tasks.TaskListItemStatus
@@ -56,45 +55,49 @@ internal class InboxViewModel(
                 }
             }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), InboxUiState.Loading)
 
-    fun onCreateTask(title: String) {
-        if (title.isBlank()) return
-        viewModelScope.launch {
-            taskRepository.createTask(TaskDraft(title = title.trim()), projectId = null)
+    fun onAction(action: InboxAction) {
+        when (action) {
+            is InboxAction.DeleteTaskConfirmed -> deleteTask(action.taskId)
+            is InboxAction.TaskChecked -> completeTask(action.taskId)
         }
     }
 
-    fun onDeleteTask(taskId: TaskId) {
+    private fun deleteTask(taskId: TaskId) {
         viewModelScope.launch {
             taskRepository.removeTask(taskId)
         }
     }
 
-    fun onCompleteTask(
-        item: TaskListItem,
-        index: Int,
-    ) {
-        if (item.id in completedTasksMap.value) return
+    private fun completeTask(taskId: TaskId) {
+        if (taskId in completedTasksMap.value) return
+
+        val (index, item) =
+            (uiState.value as? InboxUiState.Content)
+                ?.tasks
+                ?.withIndex()
+                ?.firstOrNull { it.value.id == taskId }
+                ?: return
 
         viewModelScope.launch {
             try {
                 completedTasksMap.update {
                     it.plus(
-                        item.id to (item.copy(status = TaskListItemStatus.Done) to index),
+                        taskId to (item.copy(status = TaskListItemStatus.Done) to index),
                     )
                 }
                 viewModelScope.launch {
-                    delay(REMOVE_COMPLETED_TASK_DELAY.milliseconds)
-                    completedTasksMap.update { it.minus(item.id) }
+                    delay(REMOVE_COMPLETED_TASK_DELAY_MILLIS.milliseconds)
+                    completedTasksMap.update { it.minus(taskId) }
                 }
-                taskRepository.completeTask(item.id)
+                taskRepository.completeTask(taskId)
             } catch (_: TaskNotFoundException) {
-                completedTasksMap.update { it.minus(item.id) }
+                completedTasksMap.update { it.minus(taskId) }
             }
         }
     }
 
     private companion object {
         const val STOP_TIMEOUT_MILLIS = 5_000L
-        const val REMOVE_COMPLETED_TASK_DELAY = 1_000L
+        const val REMOVE_COMPLETED_TASK_DELAY_MILLIS = 1_000L
     }
 }
