@@ -63,8 +63,13 @@ internal class InboxViewModel(
     }
 
     private fun deleteTask(taskId: TaskId) {
+        completedTasksMap.update { it.minus(taskId) }
+
         viewModelScope.launch {
-            taskRepository.removeTask(taskId)
+            try {
+                taskRepository.removeTask(taskId)
+            } catch (_: TaskNotFoundException) {
+            }
         }
     }
 
