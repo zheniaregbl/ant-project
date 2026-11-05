@@ -181,5 +181,5 @@ class DefaultSubtaskRepositoryTest {
             )
         }
 
-    private suspend fun createTask(): TaskId = tasks.createTask(TaskDraft(title = "Задача"), projectId = null)
+    private suspend fun createTask(): TaskId = tasks.createTaskOrFail(TaskDraft(title = "Задача"), projectId = null)
 }
