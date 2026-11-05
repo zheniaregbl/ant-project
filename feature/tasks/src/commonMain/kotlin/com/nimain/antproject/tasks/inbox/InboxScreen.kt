@@ -61,13 +61,17 @@ private val TopListTaskPadding = 14.dp
 private val BottomListTaskPadding = 30.dp
 
 @Composable
-fun InboxScreen(modifier: Modifier = Modifier) {
+internal fun InboxScreen(
+    navigateToDetails: (TaskId) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val viewModel = koinViewModel<InboxViewModel>()
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     InboxContent(
         state = state,
         onAction = viewModel::onAction,
+        onTaskClick = navigateToDetails,
         modifier = modifier,
     )
 }
@@ -76,6 +80,7 @@ fun InboxScreen(modifier: Modifier = Modifier) {
 internal fun InboxContent(
     state: InboxUiState,
     onAction: (InboxAction) -> Unit,
+    onTaskClick: (TaskId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var menuTaskId by rememberSaveable { mutableStateOf<TaskId?>(null) }
@@ -103,6 +108,7 @@ internal fun InboxContent(
                 state = state,
                 onLongClickTask = { menuTaskId = it },
                 onComplete = { onAction(InboxAction.TaskChecked(it)) },
+                onTaskClick = onTaskClick,
             )
         }
     }
@@ -191,6 +197,7 @@ private fun TasksListSection(
     state: InboxUiState,
     onLongClickTask: (TaskId) -> Unit,
     onComplete: (TaskId) -> Unit,
+    onTaskClick: (TaskId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     AnimatedContent(
@@ -208,6 +215,7 @@ private fun TasksListSection(
                     state = contentState,
                     onLongClickTask = onLongClickTask,
                     onComplete = onComplete,
+                    onTaskClick = onTaskClick,
                 )
             }
             InboxUiState.Empty -> {
@@ -242,6 +250,7 @@ private fun TaskList(
     state: InboxUiState.Content,
     onLongClickTask: (TaskId) -> Unit,
     onComplete: (TaskId) -> Unit,
+    onTaskClick: (TaskId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -278,7 +287,7 @@ private fun TaskList(
                         title = item.title,
                         isDone = item.status == TaskListItemStatus.Done,
                     ),
-                onClick = {},
+                onClick = { onTaskClick(item.id) },
                 onLongClick = { onLongClickTask(item.id) },
                 onCheckedChange = { onComplete(item.id) },
             )
@@ -309,6 +318,7 @@ private fun InboxScreenCatalog() {
                     ),
                 ),
             onAction = {},
+            onTaskClick = {},
             modifier = Modifier.fillMaxSize(),
         )
     }

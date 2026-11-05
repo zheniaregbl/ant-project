@@ -17,9 +17,9 @@ import androidx.navigation.navigation
 import com.nimain.antproject.core.navigation.rememberNavActions
 import com.nimain.antproject.tasks.ProjectListScreen
 import com.nimain.antproject.tasks.ScheduledScreen
-import com.nimain.antproject.tasks.TaskDetailScreen
 import com.nimain.antproject.tasks.TaskListFilter
 import com.nimain.antproject.tasks.TaskListScreen
+import com.nimain.antproject.tasks.detail.TaskDetailScreen
 import com.nimain.antproject.tasks.inbox.InboxScreen
 
 private const val TAB_FADE_DURATION_MS = 200
@@ -52,7 +52,13 @@ fun NavGraphBuilder.tasksGraph(navController: NavController) {
             exitTransition = tabExit,
             popEnterTransition = tabEnter,
             popExitTransition = tabExit,
-        ) { InboxScreen(modifier = Modifier.fillMaxSize()) }
+        ) { entry ->
+            val navActions = rememberNavActions(navController, entry)
+            InboxScreen(
+                modifier = Modifier.fillMaxSize(),
+                navigateToDetails = { navActions.to(TaskDetail) },
+            )
+        }
 
         composable<Today>(
             enterTransition = tabEnter,

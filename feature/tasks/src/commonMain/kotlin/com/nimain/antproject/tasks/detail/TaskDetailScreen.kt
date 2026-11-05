@@ -1,4 +1,4 @@
-package com.nimain.antproject.tasks
+package com.nimain.antproject.tasks.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 internal fun TaskDetailScreen(
-    modifier: Modifier = Modifier,
     onBack: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(modifier = modifier) {
         Column(
