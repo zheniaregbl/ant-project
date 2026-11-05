@@ -1,12 +1,15 @@
 package com.nimain.antproject.tasks
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 internal fun TaskListScreen(
@@ -15,11 +18,12 @@ internal fun TaskListScreen(
     onTaskClick: () -> Unit,
     onBack: (() -> Unit)? = null,
 ) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Scaffold(modifier = modifier) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(space = 10.dp, alignment = Alignment.CenterVertically),
+        ) {
             Text("TaskListScreen")
             if (filter == TaskListFilter.Project) {
                 Button(onClick = onTaskClick) { Text("Task") }

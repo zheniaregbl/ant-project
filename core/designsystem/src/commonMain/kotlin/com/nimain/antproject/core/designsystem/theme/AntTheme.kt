@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 import com.nimain.antproject.core.designsystem.theme.color.DarkColorScheme
 import com.nimain.antproject.core.designsystem.theme.color.DarkExtendedColors
 import com.nimain.antproject.core.designsystem.theme.color.ExtendedColors
@@ -24,6 +25,8 @@ import com.nimain.antproject.core.designsystem.theme.typography.LocalExtendedTyp
 import com.nimain.antproject.core.designsystem.theme.typography.antExtendedTypography
 import com.nimain.antproject.core.designsystem.theme.typography.antTypography
 
+val LocalIsDarkTheme = staticCompositionLocalOf { false }
+
 @Composable
 fun AntTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -32,6 +35,7 @@ fun AntTheme(
     val extendedColors = if (darkTheme) DarkExtendedColors else LightExtendedColors
     val elevation = if (darkTheme) DarkElevation else LightElevation
     CompositionLocalProvider(
+        LocalIsDarkTheme provides darkTheme,
         LocalExtendedColors provides extendedColors,
         LocalExtendedTypography provides antExtendedTypography(),
         LocalSpacing provides CompactSpacing,

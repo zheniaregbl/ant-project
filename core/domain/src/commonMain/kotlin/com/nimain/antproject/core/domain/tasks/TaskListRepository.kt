@@ -1,6 +1,7 @@
 package com.nimain.antproject.core.domain.tasks
 
 import com.nimain.antproject.core.domain.projects.ProjectId
+import com.nimain.antproject.core.domain.tasks.result.TasksResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDate
 
@@ -11,7 +12,7 @@ interface TaskListRepository {
      * Наблюдает за активными задачами, не связанными с проектами.
      * Новые задачи идут сверху.
      */
-    fun observeInboxTasks(): Flow<List<TaskListItem>>
+    fun observeInboxTasks(): Flow<TasksResult>
 
     // Project tasks
 

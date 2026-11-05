@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable object Inbox
 
-@Serializable object Scheduled
+@Serializable object Today
 
 @Serializable object Projects
 

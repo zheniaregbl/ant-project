@@ -10,7 +10,6 @@ import com.nimain.antproject.core.domain.tasks.Priority
 import com.nimain.antproject.core.domain.tasks.TaskDraft
 import com.nimain.antproject.core.domain.tasks.TaskId
 import com.nimain.antproject.core.domain.tasks.TaskListItemStatus
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
@@ -49,12 +48,12 @@ class DefaultTaskRepositoryTest {
     fun createdTaskAppearsInInbox() =
         runTest {
             val id =
-                tasks.createTask(
+                tasks.createTaskOrFail(
                     TaskDraft(title = "Купить молоко", priority = Priority.High),
                     projectId = null,
                 )
 
-            val item = lists.observeInboxTasks().first().single()
+            val item = lists.inboxTasks().single()
             assertEquals(id, item.id)
             assertEquals("Купить молоко", item.title)
             assertEquals(Priority.High, item.priority)
@@ -65,17 +64,17 @@ class DefaultTaskRepositoryTest {
     @Test
     fun completedTaskDisappearsFromInbox() =
         runTest {
-            val id = tasks.createTask(TaskDraft(title = "Позвонить"), projectId = null)
+            val id = tasks.createTaskOrFail(TaskDraft(title = "Позвонить"), projectId = null)
 
             tasks.completeTask(id)
 
-            assertTrue(lists.observeInboxTasks().first().isEmpty())
+            assertTrue(lists.inboxTasks().isEmpty())
         }
 
     @Test
     fun completingTaskTwiceKeepsFirstCompletionTime() =
         runTest {
-            val id = tasks.createTask(TaskDraft(title = "Позвонить"), projectId = null)
+            val id = tasks.createTaskOrFail(TaskDraft(title = "Позвонить"), projectId = null)
             tasks.completeTask(id)
 
             clock.current = BASE_TIME + 1.hours
@@ -111,7 +110,7 @@ class DefaultTaskRepositoryTest {
                 projectId = null,
             )
 
-            val item = lists.observeInboxTasks().first().single()
+            val item = lists.inboxTasks().single()
 
             assertEquals(dueDate, item.dueDate)
             assertEquals(dueTime, item.dueTime)
@@ -127,8 +126,7 @@ class DefaultTaskRepositoryTest {
             assertEquals(
                 title.trim(),
                 lists
-                    .observeInboxTasks()
-                    .first()
+                    .inboxTasks()
                     .first()
                     .title,
             )
@@ -146,7 +144,7 @@ class DefaultTaskRepositoryTest {
     fun updateTaskChangesFieldsAndKeepsCreatedAt() =
         runTest {
             val original = TaskDraft(title = "Задача", priority = Priority.Low)
-            val id = tasks.createTask(original, projectId = null)
+            val id = tasks.createTaskOrFail(original, projectId = null)
 
             clock.current = BASE_TIME + 1.hours
 
@@ -175,14 +173,14 @@ class DefaultTaskRepositoryTest {
         runTest {
             val projectId = db.insertProject()
 
-            val id = tasks.createTask(TaskDraft(title = "Задача"), projectId = null)
-            assertTrue(lists.observeInboxTasks().first().isNotEmpty())
+            val id = tasks.createTaskOrFail(TaskDraft(title = "Задача"), projectId = null)
+            assertTrue(lists.inboxTasks().isNotEmpty())
 
             tasks.moveTaskToProject(id = id, projectId = projectId)
-            assertTrue(lists.observeInboxTasks().first().isEmpty())
+            assertTrue(lists.inboxTasks().isEmpty())
 
             tasks.moveTaskToProject(id = id, projectId = null)
-            assertTrue(lists.observeInboxTasks().first().isNotEmpty())
+            assertTrue(lists.inboxTasks().isNotEmpty())
         }
 
     @Test
@@ -198,7 +196,7 @@ class DefaultTaskRepositoryTest {
     @Test
     fun moveTaskToMissingProject() =
         runTest {
-            val id = tasks.createTask(TaskDraft(title = "Задача"), projectId = null)
+            val id = tasks.createTaskOrFail(TaskDraft(title = "Задача"), projectId = null)
 
             assertFailsWith<ProjectNotFoundException> {
                 tasks.moveTaskToProject(id, ProjectId(Uuid.generateV7().toString()))
@@ -207,8 +205,7 @@ class DefaultTaskRepositoryTest {
             assertEquals(
                 id,
                 lists
-                    .observeInboxTasks()
-                    .first()
+                    .inboxTasks()
                     .first()
                     .id,
             )

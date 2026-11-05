@@ -5,6 +5,7 @@ import com.nimain.antproject.core.domain.common.exception.TagNotFoundException
 import com.nimain.antproject.core.domain.common.exception.TaskNotFoundException
 import com.nimain.antproject.core.domain.projects.ProjectId
 import com.nimain.antproject.core.domain.tags.TagId
+import com.nimain.antproject.core.domain.tasks.result.CreateTaskResult
 import kotlinx.coroutines.flow.Flow
 
 interface TaskRepository {
@@ -18,13 +19,13 @@ interface TaskRepository {
      * Создаёт новую задачу по данным из [draft] в проекте [projectId].
      * Если [projectId] равен `null`, задача попадает во «Входящие».
      *
-     * @return идентификатор созданной задачи.
+     * @return [CreateTaskResult]
      * @throws ProjectNotFoundException если проекта с [projectId] нет.
      */
     suspend fun createTask(
         draft: TaskDraft,
         projectId: ProjectId?,
-    ): TaskId
+    ): CreateTaskResult
 
     /**
      * Обновляет задачу с [id] по данным из [draft].

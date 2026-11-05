@@ -38,20 +38,19 @@ class DefaultTaskListRepositoryTest {
 
             tasks.createTask(TaskDraft(title = "Задача"), projectId = projectId)
 
-            assertTrue(lists.observeInboxTasks().first().isEmpty())
+            assertTrue(lists.inboxTasks().isEmpty())
         }
 
     @Test
     fun inboxShowsNewestTasksFirst() =
         runTest {
-            val first = tasks.createTask(TaskDraft(title = "Задача 1"), projectId = null)
-            val second = tasks.createTask(TaskDraft(title = "Задача 2"), projectId = null)
+            val first = tasks.createTaskOrFail(TaskDraft(title = "Задача 1"), projectId = null)
+            val second = tasks.createTaskOrFail(TaskDraft(title = "Задача 2"), projectId = null)
 
             assertEquals(
                 listOf(second, first),
                 lists
-                    .observeInboxTasks()
-                    .first()
+                    .inboxTasks()
                     .map { it.id },
             )
         }

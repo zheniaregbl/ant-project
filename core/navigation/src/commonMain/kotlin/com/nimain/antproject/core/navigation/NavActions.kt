@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 
 class NavActions(
     private val navController: NavController,
@@ -15,6 +16,14 @@ class NavActions(
 
     fun to(route: Any) {
         if (canNavigate) navController.navigate(route) { launchSingleTop = true }
+    }
+
+    fun toTab(route: Any) {
+        if (!canNavigate) return
+        navController.navigate(route) {
+            popUpTo(navController.graph.findStartDestination().id)
+            launchSingleTop = true
+        }
     }
 
     fun back() {
