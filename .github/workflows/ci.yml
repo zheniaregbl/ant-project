@@ -19,37 +19,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - id: lint
-            name: Lint
+          - id: jvm
+            name: Lint, tests, Android & Desktop builds
             os: ubuntu-latest
-            tasks: ktlintCheck detekt
+            tasks: >-
+              ktlintCheck detekt
+              allTests
+              :androidApp:assembleDebug
+              :desktopApp:assemble
 
-          - id: test-jvm
-            name: Tests (Desktop + Android)
-            os: ubuntu-latest
-            tasks: allTests
-
-          - id: test-ios
-            name: Tests (iOS)
+          - id: ios
+            name: iOS tests & framework
             os: macos-latest
             native: true
-            tasks: iosSimulatorArm64Test
-
-          - id: build-android
-            name: Build Android
-            os: ubuntu-latest
-            tasks: :androidApp:assembleDebug
-
-          - id: build-desktop
-            name: Build Desktop
-            os: ubuntu-latest
-            tasks: :desktopApp:assemble
-
-          - id: build-ios
-            name: Build iOS framework
-            os: macos-latest
-            native: true
-            tasks: :shared:linkDebugFrameworkIosSimulatorArm64
+            tasks: >-
+              iosSimulatorArm64Test
+              :shared:linkDebugFrameworkIosSimulatorArm64
 
     steps:
       - uses: actions/checkout@v4
@@ -71,8 +56,8 @@ jobs:
           key: konan-${{ runner.os }}-${{ hashFiles('gradle/libs.versions.toml') }}
           restore-keys: konan-${{ runner.os }}-
 
-      - name: Run ${{ matrix.tasks }}
-        run: ./gradlew ${{ matrix.tasks }}
+      - name: Run Gradle
+        run: ./gradlew ${{ matrix.tasks }} --continue
 
       - name: Upload reports on failure
         if: failure()
