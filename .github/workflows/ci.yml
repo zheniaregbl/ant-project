@@ -60,6 +60,8 @@ jobs:
           java-version: 21
 
       - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
 
       - name: Cache Kotlin/Native toolchain
         if: matrix.native
