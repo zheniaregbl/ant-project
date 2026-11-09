@@ -1,10 +1,13 @@
-package com.nimain.antproject.core.domain.tasks
+package com.nimain.antproject.core.domain.tasks.repository
 
 import com.nimain.antproject.core.domain.common.exception.ProjectNotFoundException
 import com.nimain.antproject.core.domain.common.exception.TagNotFoundException
 import com.nimain.antproject.core.domain.common.exception.TaskNotFoundException
 import com.nimain.antproject.core.domain.projects.ProjectId
 import com.nimain.antproject.core.domain.tags.TagId
+import com.nimain.antproject.core.domain.tasks.model.TaskDetail
+import com.nimain.antproject.core.domain.tasks.model.TaskDraft
+import com.nimain.antproject.core.domain.tasks.model.TaskId
 import com.nimain.antproject.core.domain.tasks.result.CreateTaskResult
 import kotlinx.coroutines.flow.Flow
 

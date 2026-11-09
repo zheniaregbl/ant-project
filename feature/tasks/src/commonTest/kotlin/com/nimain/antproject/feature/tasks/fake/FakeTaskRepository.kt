@@ -2,10 +2,10 @@ package com.nimain.antproject.feature.tasks.fake
 
 import com.nimain.antproject.core.domain.projects.ProjectId
 import com.nimain.antproject.core.domain.tags.TagId
-import com.nimain.antproject.core.domain.tasks.TaskDetail
-import com.nimain.antproject.core.domain.tasks.TaskDraft
-import com.nimain.antproject.core.domain.tasks.TaskId
-import com.nimain.antproject.core.domain.tasks.TaskRepository
+import com.nimain.antproject.core.domain.tasks.model.TaskDetail
+import com.nimain.antproject.core.domain.tasks.model.TaskDraft
+import com.nimain.antproject.core.domain.tasks.model.TaskId
+import com.nimain.antproject.core.domain.tasks.repository.TaskRepository
 import com.nimain.antproject.core.domain.tasks.result.CreateTaskResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

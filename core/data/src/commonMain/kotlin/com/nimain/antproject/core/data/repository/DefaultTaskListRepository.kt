@@ -5,8 +5,8 @@ import com.nimain.antproject.core.data.mapper.toListItem
 import com.nimain.antproject.core.database.dao.TaskDao
 import com.nimain.antproject.core.database.model.TaskListRow
 import com.nimain.antproject.core.domain.projects.ProjectId
-import com.nimain.antproject.core.domain.tasks.TaskListItem
-import com.nimain.antproject.core.domain.tasks.TaskListRepository
+import com.nimain.antproject.core.domain.tasks.model.TaskListItem
+import com.nimain.antproject.core.domain.tasks.repository.TaskListRepository
 import com.nimain.antproject.core.domain.tasks.result.TasksResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

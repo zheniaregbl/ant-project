@@ -1,4 +1,4 @@
-package com.nimain.antproject.core.domain.tasks
+package com.nimain.antproject.core.domain.tasks.model
 
 import com.nimain.antproject.core.domain.projects.ProjectId
 import com.nimain.antproject.core.domain.tags.TagItem

@@ -7,9 +7,9 @@ import com.nimain.antproject.core.data.repository.DefaultTaskRepository
 import com.nimain.antproject.core.database.AppDatabase
 import com.nimain.antproject.core.domain.common.exception.SubtaskNotFoundException
 import com.nimain.antproject.core.domain.common.exception.TaskNotFoundException
-import com.nimain.antproject.core.domain.tasks.SubtaskId
-import com.nimain.antproject.core.domain.tasks.TaskDraft
-import com.nimain.antproject.core.domain.tasks.TaskId
+import com.nimain.antproject.core.domain.tasks.model.SubtaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskDraft
+import com.nimain.antproject.core.domain.tasks.model.TaskId
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest

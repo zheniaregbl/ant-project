@@ -1,6 +1,7 @@
-package com.nimain.antproject.core.domain.tasks
+package com.nimain.antproject.core.domain.tasks.repository
 
 import com.nimain.antproject.core.domain.projects.ProjectId
+import com.nimain.antproject.core.domain.tasks.model.TaskListItem
 import com.nimain.antproject.core.domain.tasks.result.TasksResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDate
@@ -28,7 +29,7 @@ interface TaskListRepository {
     /**
      * Наблюдает за активными задачами на [today] и просроченными активными задачами прошлых дней.
      * Задачи без срока в выборку не попадают, как и задачи в статусах,
-     * отличных от [TaskStatus.Active].
+     * отличных от [com.nimain.antproject.core.domain.tasks.model.TaskStatus.Active].
      *
      * Порядок: сначала задачи прошлых дней по возрастанию даты,
      * затем задачи на [today] без времени, затем задачи на [today] со временем

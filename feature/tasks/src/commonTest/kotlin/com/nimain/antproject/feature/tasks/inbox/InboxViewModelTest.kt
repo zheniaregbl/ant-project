@@ -1,10 +1,10 @@
 package com.nimain.antproject.feature.tasks.inbox
 
 import com.nimain.antproject.core.domain.common.exception.TaskNotFoundException
-import com.nimain.antproject.core.domain.tasks.Priority
-import com.nimain.antproject.core.domain.tasks.TaskId
-import com.nimain.antproject.core.domain.tasks.TaskListItem
-import com.nimain.antproject.core.domain.tasks.TaskListItemStatus
+import com.nimain.antproject.core.domain.tasks.model.Priority
+import com.nimain.antproject.core.domain.tasks.model.TaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskListItem
+import com.nimain.antproject.core.domain.tasks.model.TaskListItemStatus
 import com.nimain.antproject.feature.tasks.fake.FakeTaskListRepository
 import com.nimain.antproject.feature.tasks.fake.FakeTaskRepository
 import com.nimain.antproject.tasks.inbox.InboxAction

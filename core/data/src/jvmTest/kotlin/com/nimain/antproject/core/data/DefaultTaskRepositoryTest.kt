@@ -6,10 +6,10 @@ import com.nimain.antproject.core.database.AppDatabase
 import com.nimain.antproject.core.domain.common.exception.ProjectNotFoundException
 import com.nimain.antproject.core.domain.common.exception.TaskNotFoundException
 import com.nimain.antproject.core.domain.projects.ProjectId
-import com.nimain.antproject.core.domain.tasks.Priority
-import com.nimain.antproject.core.domain.tasks.TaskDraft
-import com.nimain.antproject.core.domain.tasks.TaskId
-import com.nimain.antproject.core.domain.tasks.TaskListItemStatus
+import com.nimain.antproject.core.domain.tasks.model.Priority
+import com.nimain.antproject.core.domain.tasks.model.TaskDraft
+import com.nimain.antproject.core.domain.tasks.model.TaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskListItemStatus
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime

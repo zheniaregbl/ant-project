@@ -7,9 +7,9 @@ import com.nimain.antproject.core.database.dao.TaskDao
 import com.nimain.antproject.core.database.entity.SubtaskEntity
 import com.nimain.antproject.core.domain.common.exception.SubtaskNotFoundException
 import com.nimain.antproject.core.domain.common.exception.TaskNotFoundException
-import com.nimain.antproject.core.domain.tasks.SubtaskId
-import com.nimain.antproject.core.domain.tasks.SubtaskRepository
-import com.nimain.antproject.core.domain.tasks.TaskId
+import com.nimain.antproject.core.domain.tasks.model.SubtaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskId
+import com.nimain.antproject.core.domain.tasks.repository.SubtaskRepository
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid

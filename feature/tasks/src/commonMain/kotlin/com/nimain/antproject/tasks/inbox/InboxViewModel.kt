@@ -3,11 +3,11 @@ package com.nimain.antproject.tasks.inbox
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nimain.antproject.core.domain.common.exception.TaskNotFoundException
-import com.nimain.antproject.core.domain.tasks.TaskId
-import com.nimain.antproject.core.domain.tasks.TaskListItem
-import com.nimain.antproject.core.domain.tasks.TaskListItemStatus
-import com.nimain.antproject.core.domain.tasks.TaskListRepository
-import com.nimain.antproject.core.domain.tasks.TaskRepository
+import com.nimain.antproject.core.domain.tasks.model.TaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskListItem
+import com.nimain.antproject.core.domain.tasks.model.TaskListItemStatus
+import com.nimain.antproject.core.domain.tasks.repository.TaskListRepository
+import com.nimain.antproject.core.domain.tasks.repository.TaskRepository
 import com.nimain.antproject.core.domain.tasks.result.TasksResult
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

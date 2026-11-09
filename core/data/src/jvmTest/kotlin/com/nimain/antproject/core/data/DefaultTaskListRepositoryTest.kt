@@ -3,8 +3,7 @@ package com.nimain.antproject.core.data
 import com.nimain.antproject.core.data.repository.DefaultTaskListRepository
 import com.nimain.antproject.core.data.repository.DefaultTaskRepository
 import com.nimain.antproject.core.database.AppDatabase
-import com.nimain.antproject.core.domain.tasks.TaskDraft
-import kotlinx.coroutines.flow.first
+import com.nimain.antproject.core.domain.tasks.model.TaskDraft
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest

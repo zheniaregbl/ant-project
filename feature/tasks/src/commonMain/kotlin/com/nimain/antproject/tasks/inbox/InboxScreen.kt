@@ -46,10 +46,10 @@ import com.nimain.antproject.core.designsystem.components.layout.loading.Loading
 import com.nimain.antproject.core.designsystem.components.taskrow.TaskRow
 import com.nimain.antproject.core.designsystem.components.taskrow.TaskRowModel
 import com.nimain.antproject.core.designsystem.theme.AntTheme
-import com.nimain.antproject.core.domain.tasks.Priority
-import com.nimain.antproject.core.domain.tasks.TaskId
-import com.nimain.antproject.core.domain.tasks.TaskListItem
-import com.nimain.antproject.core.domain.tasks.TaskListItemStatus
+import com.nimain.antproject.core.domain.tasks.model.Priority
+import com.nimain.antproject.core.domain.tasks.model.TaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskListItem
+import com.nimain.antproject.core.domain.tasks.model.TaskListItemStatus
 import com.nimain.antproject.tasks.components.TaskActionsSheet
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel

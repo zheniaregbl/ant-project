@@ -4,9 +4,9 @@ import com.nimain.antproject.core.data.repository.DefaultSubtaskRepository
 import com.nimain.antproject.core.data.repository.DefaultTaskListRepository
 import com.nimain.antproject.core.data.repository.DefaultTaskRepository
 import com.nimain.antproject.core.database.di.databaseModule
-import com.nimain.antproject.core.domain.tasks.SubtaskRepository
-import com.nimain.antproject.core.domain.tasks.TaskListRepository
-import com.nimain.antproject.core.domain.tasks.TaskRepository
+import com.nimain.antproject.core.domain.tasks.repository.SubtaskRepository
+import com.nimain.antproject.core.domain.tasks.repository.TaskListRepository
+import com.nimain.antproject.core.domain.tasks.repository.TaskRepository
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module

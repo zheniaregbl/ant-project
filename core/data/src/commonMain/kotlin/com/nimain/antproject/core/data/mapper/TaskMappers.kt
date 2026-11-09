@@ -3,11 +3,11 @@ package com.nimain.antproject.core.data.mapper
 import com.nimain.antproject.core.database.entity.TaskEntity
 import com.nimain.antproject.core.database.model.TaskListRow
 import com.nimain.antproject.core.database.util.TaskStatusCode
-import com.nimain.antproject.core.domain.tasks.Priority
-import com.nimain.antproject.core.domain.tasks.TaskDraft
-import com.nimain.antproject.core.domain.tasks.TaskListItem
-import com.nimain.antproject.core.domain.tasks.TaskListItemStatus
-import com.nimain.antproject.core.domain.tasks.TaskStatus
+import com.nimain.antproject.core.domain.tasks.model.Priority
+import com.nimain.antproject.core.domain.tasks.model.TaskDraft
+import com.nimain.antproject.core.domain.tasks.model.TaskListItem
+import com.nimain.antproject.core.domain.tasks.model.TaskListItemStatus
+import com.nimain.antproject.core.domain.tasks.model.TaskStatus
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlin.time.Instant

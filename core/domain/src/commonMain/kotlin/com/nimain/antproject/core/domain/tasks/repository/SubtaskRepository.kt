@@ -1,7 +1,9 @@
-package com.nimain.antproject.core.domain.tasks
+package com.nimain.antproject.core.domain.tasks.repository
 
 import com.nimain.antproject.core.domain.common.exception.SubtaskNotFoundException
 import com.nimain.antproject.core.domain.common.exception.TaskNotFoundException
+import com.nimain.antproject.core.domain.tasks.model.SubtaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskId
 
 interface SubtaskRepository {
     /**

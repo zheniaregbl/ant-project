@@ -1,6 +1,6 @@
 package com.nimain.antproject.tasks.inbox
 
-import com.nimain.antproject.core.domain.tasks.TaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskId
 
 internal sealed interface InboxAction {
     data class TaskChecked(

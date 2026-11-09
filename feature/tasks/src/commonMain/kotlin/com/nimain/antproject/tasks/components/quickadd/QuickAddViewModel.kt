@@ -7,8 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nimain.antproject.core.domain.tasks.TaskDraft
-import com.nimain.antproject.core.domain.tasks.TaskRepository
+import com.nimain.antproject.core.domain.tasks.model.TaskDraft
+import com.nimain.antproject.core.domain.tasks.repository.TaskRepository
 import com.nimain.antproject.core.domain.tasks.result.CreateTaskResult
 import kotlinx.coroutines.launch
 

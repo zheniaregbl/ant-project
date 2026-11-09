@@ -2,8 +2,8 @@ package com.nimain.antproject.core.domain.common.exception
 
 import com.nimain.antproject.core.domain.projects.ProjectId
 import com.nimain.antproject.core.domain.tags.TagId
-import com.nimain.antproject.core.domain.tasks.SubtaskId
-import com.nimain.antproject.core.domain.tasks.TaskId
+import com.nimain.antproject.core.domain.tasks.model.SubtaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskId
 
 sealed class NotFoundException(
     message: String,

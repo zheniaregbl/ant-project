@@ -1,6 +1,6 @@
 package com.nimain.antproject.tasks.components.quickadd
 
-import com.nimain.antproject.core.domain.tasks.TaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskId
 
 sealed interface SubmitStatus {
     data object Idle : SubmitStatus

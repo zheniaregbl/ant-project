@@ -24,7 +24,7 @@ import com.nimain.antproject.core.designsystem.components.button.AntButtonSize
 import com.nimain.antproject.core.designsystem.components.textfield.AntTextField
 import com.nimain.antproject.core.designsystem.components.textfield.AntTextFieldVariant
 import com.nimain.antproject.core.designsystem.theme.AntTheme
-import com.nimain.antproject.core.domain.tasks.TaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskId
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

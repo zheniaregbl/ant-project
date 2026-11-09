@@ -1,5 +1,8 @@
 package com.nimain.antproject.core.domain.tasks
 
+import com.nimain.antproject.core.domain.tasks.model.Recurrence
+import com.nimain.antproject.core.domain.tasks.model.SeriesId
+import com.nimain.antproject.core.domain.tasks.model.TaskStatus
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlin.test.Test
@@ -49,7 +52,14 @@ class TaskInvariantsTest {
     fun taskWithRecurrenceIsRejectedWhenStatusIsDone() {
         val error =
             assertFailsWith<IllegalArgumentException> {
-                task(status = TaskStatus.Done(now), recurrence = Recurrence.Daily(), seriesId = SeriesId("series-1"))
+                task(
+                    status = TaskStatus.Done(now),
+                    recurrence = Recurrence.Daily(),
+                    seriesId =
+                        SeriesId(
+                            "series-1",
+                        ),
+                )
             }
         assertContains(error.message.orEmpty(), "only active tasks")
     }
@@ -58,7 +68,14 @@ class TaskInvariantsTest {
     fun taskWithRecurrenceIsRejectedWhenStatusIsSkipped() {
         val error =
             assertFailsWith<IllegalArgumentException> {
-                task(status = TaskStatus.Skipped, recurrence = Recurrence.Daily(), seriesId = SeriesId("series-1"))
+                task(
+                    status = TaskStatus.Skipped,
+                    recurrence = Recurrence.Daily(),
+                    seriesId =
+                        SeriesId(
+                            "series-1",
+                        ),
+                )
             }
         assertContains(error.message.orEmpty(), "only active tasks")
     }

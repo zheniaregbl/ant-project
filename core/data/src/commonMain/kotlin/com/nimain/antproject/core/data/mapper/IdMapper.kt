@@ -1,8 +1,8 @@
 package com.nimain.antproject.core.data.mapper
 
 import com.nimain.antproject.core.domain.projects.ProjectId
-import com.nimain.antproject.core.domain.tasks.SubtaskId
-import com.nimain.antproject.core.domain.tasks.TaskId
+import com.nimain.antproject.core.domain.tasks.model.SubtaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskId
 import kotlin.uuid.Uuid
 
 internal fun TaskId.toUuid(): Uuid = Uuid.parse(value)

@@ -1,5 +1,12 @@
 package com.nimain.antproject.core.domain.tasks
 
+import com.nimain.antproject.core.domain.tasks.model.Recurrence
+import com.nimain.antproject.core.domain.tasks.model.SeriesId
+import com.nimain.antproject.core.domain.tasks.model.Subtask
+import com.nimain.antproject.core.domain.tasks.model.SubtaskId
+import com.nimain.antproject.core.domain.tasks.model.Task
+import com.nimain.antproject.core.domain.tasks.model.TaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskStatus
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlin.time.Clock

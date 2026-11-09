@@ -1,4 +1,4 @@
-package com.nimain.antproject.core.domain.tasks
+package com.nimain.antproject.core.domain.tasks.model
 
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime

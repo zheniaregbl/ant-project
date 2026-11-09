@@ -1,6 +1,6 @@
 package com.nimain.antproject.core.domain.tasks.result
 
-import com.nimain.antproject.core.domain.tasks.TaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskId
 
 sealed interface CreateTaskResult {
     data class Success(

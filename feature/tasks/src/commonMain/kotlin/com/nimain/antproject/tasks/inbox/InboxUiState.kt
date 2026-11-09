@@ -1,6 +1,6 @@
 package com.nimain.antproject.tasks.inbox
 
-import com.nimain.antproject.core.domain.tasks.TaskListItem
+import com.nimain.antproject.core.domain.tasks.model.TaskListItem
 
 internal sealed interface InboxUiState {
     data object Loading : InboxUiState

@@ -1,5 +1,6 @@
 package com.nimain.antproject.core.domain.tasks
 
+import com.nimain.antproject.core.domain.tasks.model.Recurrence
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertFailsWith

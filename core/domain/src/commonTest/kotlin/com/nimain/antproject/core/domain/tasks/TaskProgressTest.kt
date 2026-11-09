@@ -1,5 +1,6 @@
 package com.nimain.antproject.core.domain.tasks
 
+import com.nimain.antproject.core.domain.tasks.model.TaskStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
