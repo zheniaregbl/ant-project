@@ -1,5 +1,6 @@
 package com.nimain.antproject.core.data.di
 
+import com.nimain.antproject.core.data.AppCoroutineScope
 import com.nimain.antproject.core.data.repository.DefaultSubtaskRepository
 import com.nimain.antproject.core.data.repository.DefaultTaskListRepository
 import com.nimain.antproject.core.data.repository.DefaultTaskRepository
@@ -16,6 +17,7 @@ val dataModule =
     module {
         includes(databaseModule)
 
+        single { AppCoroutineScope() }
         single<Clock> { Clock.System }
 
         singleOf(::DefaultTaskRepository) bind TaskRepository::class
