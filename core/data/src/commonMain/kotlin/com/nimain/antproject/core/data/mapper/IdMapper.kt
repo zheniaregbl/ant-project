@@ -1,6 +1,7 @@
 package com.nimain.antproject.core.data.mapper
 
 import com.nimain.antproject.core.domain.projects.ProjectId
+import com.nimain.antproject.core.domain.tags.TagId
 import com.nimain.antproject.core.domain.tasks.model.SubtaskId
 import com.nimain.antproject.core.domain.tasks.model.TaskId
 import kotlin.uuid.Uuid
@@ -14,3 +15,7 @@ internal fun SubtaskId.toUuid(): Uuid = Uuid.parse(value)
 internal fun Uuid.toTaskId(): TaskId = TaskId(toString())
 
 internal fun Uuid.toSubtaskId(): SubtaskId = SubtaskId(toString())
+
+internal fun Uuid.toProjectId(): ProjectId = ProjectId(toString())
+
+internal fun Uuid.toTagId(): TagId = TagId(toString())
