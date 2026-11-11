@@ -1,9 +1,11 @@
 package com.nimain.antproject.core.data.mapper
 
 import com.nimain.antproject.core.database.entity.TaskEntity
+import com.nimain.antproject.core.database.model.TaskDetailRow
 import com.nimain.antproject.core.database.model.TaskListRow
 import com.nimain.antproject.core.database.util.TaskStatusCode
 import com.nimain.antproject.core.domain.tasks.model.Priority
+import com.nimain.antproject.core.domain.tasks.model.TaskDetail
 import com.nimain.antproject.core.domain.tasks.model.TaskDraft
 import com.nimain.antproject.core.domain.tasks.model.TaskListItem
 import com.nimain.antproject.core.domain.tasks.model.TaskListItemStatus
@@ -26,6 +28,23 @@ internal fun TaskListRow.toListItem() =
         tags = emptyList(),
         dueDate = dueDate?.let(LocalDate::parse),
         dueTime = dueTime?.let(LocalTime::parse),
+    )
+
+internal fun TaskDetailRow.toModel() =
+    TaskDetail(
+        id = id.toTaskId(),
+        project = project?.toModel(),
+        seriesId = null, // TODO: Поставить реальный seriesId при реализации повторений задачи
+        title = title,
+        description = description,
+        isArchived = false, // TODO: Поставить реальное значение флага при реализации архива
+        status = taskStatusOf(status, id),
+        priority = priorityOf(priority, id),
+        subtasks = subtasks.map { it.toModel() },
+        tags = tags.map { it.toModel() },
+        dueDate = dueDate?.let(LocalDate::parse),
+        dueTime = dueTime?.let(LocalTime::parse),
+        recurrence = null, // TODO: Поставить реальное значение при реализации повторений задачи
     )
 
 internal fun TaskDraft.toEntity(
@@ -62,6 +81,17 @@ internal fun taskListItemStatusOf(
         TaskStatusCode.ACTIVE -> TaskListItemStatus.Active
         TaskStatusCode.DONE -> TaskListItemStatus.Done
         TaskStatusCode.SKIPPED -> TaskListItemStatus.Skipped
+        else -> error("Task [$taskId] has unknown status code '$code'.")
+    }
+
+internal fun taskStatusOf(
+    code: String,
+    taskId: Uuid,
+): TaskStatus =
+    when (code) {
+        TaskStatusCode.ACTIVE -> TaskStatus.Active
+        TaskStatusCode.DONE -> TaskStatus.Active
+        TaskStatusCode.SKIPPED -> TaskStatus.Skipped
         else -> error("Task [$taskId] has unknown status code '$code'.")
     }
 
