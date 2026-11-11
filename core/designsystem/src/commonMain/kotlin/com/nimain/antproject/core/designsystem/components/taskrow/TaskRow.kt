@@ -1,26 +1,18 @@
 package com.nimain.antproject.core.designsystem.components.taskrow
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,11 +25,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nimain.antproject.core.designsystem.components.checkbox.AntCheckbox
+import com.nimain.antproject.core.designsystem.components.checkbox.AntCheckboxSize
 import com.nimain.antproject.core.designsystem.theme.AntTheme
 
 private val ProjectTitleMaxWidth = 140.dp
-private val CheckboxCircleSize = 20.dp
-private val CheckboxBorderWidth = 2.dp
 private val MetaSectionTopPadding = 6.dp
 
 @Composable
@@ -58,9 +50,10 @@ fun TaskRow(
                     onLongClick = onLongClick,
                 ),
     ) {
-        CircleCheckboxSection(
+        AntCheckbox(
             isDone = model.isDone,
             color = model.priority.color(),
+            size = AntCheckboxSize.Small,
             onClick = onCheckedChange,
         )
         Column(modifier = Modifier.weight(1f)) {
@@ -156,60 +149,6 @@ private fun MetaRow(
                 overflow = TextOverflow.Ellipsis,
                 color = AntTheme.colors.textMuted,
             )
-        }
-    }
-}
-
-@Composable
-private fun CircleCheckboxSection(
-    isDone: Boolean,
-    color: Color,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier =
-            modifier
-                .fillMaxHeight()
-                .clickable(
-                    onClick = onClick,
-                    indication = null,
-                    interactionSource = null,
-                ).padding(
-                    start = AntTheme.spacing.screenHorizontal,
-                    top = AntTheme.spacing.listItemVertical,
-                    end = AntTheme.spacing.listItemVertical,
-                ),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            Box(
-                modifier =
-                    Modifier
-                        .size(CheckboxCircleSize)
-                        .background(
-                            color = if (isDone) MaterialTheme.colorScheme.primary else Color.Transparent,
-                            shape = CircleShape,
-                        ).then(
-                            if (!isDone) {
-                                Modifier.border(
-                                    width = CheckboxBorderWidth,
-                                    color = color,
-                                    shape = CircleShape,
-                                )
-                            } else {
-                                Modifier
-                            },
-                        ),
-            )
-            if (isDone) {
-                Icon(
-                    modifier = Modifier.size(10.dp),
-                    imageVector = Icons.Default.Check,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                )
-            }
         }
     }
 }
