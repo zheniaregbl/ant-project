@@ -97,7 +97,7 @@ internal class DefaultTaskRepository(
         if (updated == 0) throw TaskNotFoundException(id)
     }
 
-    override suspend fun updateTitle(
+    override fun updateTitle(
         id: TaskId,
         title: String,
     ) {
@@ -112,7 +112,7 @@ internal class DefaultTaskRepository(
         }
     }
 
-    override suspend fun updateDescription(
+    override fun updateDescription(
         id: TaskId,
         description: String?,
     ) {

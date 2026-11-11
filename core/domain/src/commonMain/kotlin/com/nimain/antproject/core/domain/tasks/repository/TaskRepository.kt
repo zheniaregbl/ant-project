@@ -66,12 +66,12 @@ interface TaskRepository {
         projectId: ProjectId?,
     )
 
-    suspend fun updateTitle(
+    fun updateTitle(
         id: TaskId,
         title: String,
     )
 
-    suspend fun updateDescription(
+    fun updateDescription(
         id: TaskId,
         description: String?,
     )
