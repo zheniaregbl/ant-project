@@ -2,6 +2,7 @@ package com.nimain.antproject.core.data.repository
 
 import androidx.sqlite.SQLiteException
 import com.nimain.antproject.core.data.mapper.toEntity
+import com.nimain.antproject.core.data.mapper.toModel
 import com.nimain.antproject.core.data.mapper.toTaskId
 import com.nimain.antproject.core.data.mapper.toUuid
 import com.nimain.antproject.core.database.dao.ProjectDao
@@ -16,6 +17,7 @@ import com.nimain.antproject.core.domain.tasks.model.TaskId
 import com.nimain.antproject.core.domain.tasks.repository.TaskRepository
 import com.nimain.antproject.core.domain.tasks.result.CreateTaskResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -26,9 +28,8 @@ internal class DefaultTaskRepository(
     private val projectDao: ProjectDao,
     private val clock: Clock,
 ) : TaskRepository {
-    override fun observeTask(id: TaskId): Flow<TaskDetail?> {
-        TODO("Нужен запрос деталей с подзадачами и тегами")
-    }
+    override fun observeTask(id: TaskId): Flow<TaskDetail?> =
+        taskDao.observeTaskDetail(id.toUuid()).map { it?.toModel() }
 
     override suspend fun createTask(
         draft: TaskDraft,

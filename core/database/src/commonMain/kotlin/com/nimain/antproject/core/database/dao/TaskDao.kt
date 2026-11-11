@@ -4,7 +4,9 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.nimain.antproject.core.database.entity.TaskEntity
+import com.nimain.antproject.core.database.model.TaskDetailRow
 import com.nimain.antproject.core.database.model.TaskListRow
 import com.nimain.antproject.core.database.util.TaskStatusCode
 import kotlinx.coroutines.flow.Flow
@@ -32,6 +34,16 @@ interface TaskDao {
         """,
     )
     fun observeInbox(): Flow<List<TaskListRow>>
+
+    @Transaction
+    @Query(
+        """
+        SELECT id, title, description, status, priority, due_date, due_time, project_id
+        FROM task
+        WHERE id = :id
+        """,
+    )
+    fun observeTaskDetail(id: Uuid): Flow<TaskDetailRow?>
 
     @Query("SELECT * FROM task")
     suspend fun getAll(): List<TaskEntity>
