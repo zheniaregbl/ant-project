@@ -66,6 +66,16 @@ interface TaskRepository {
         projectId: ProjectId?,
     )
 
+    suspend fun updateTitle(
+        id: TaskId,
+        title: String,
+    )
+
+    suspend fun updateDescription(
+        id: TaskId,
+        description: String?,
+    )
+
     /**
      * Заменяет весь набор тегов задачи на [tags].
      * Пустой набор снимает с задачи все теги.

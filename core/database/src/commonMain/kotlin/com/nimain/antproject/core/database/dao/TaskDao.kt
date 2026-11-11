@@ -12,6 +12,7 @@ import com.nimain.antproject.core.database.util.TaskStatusCode
 import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.Uuid
 
+@Suppress("TooManyFunctions")
 @Dao
 interface TaskDao {
     @Insert
@@ -85,6 +86,20 @@ interface TaskDao {
     suspend fun moveToProject(
         id: Uuid,
         projectId: Uuid?,
+        now: Long,
+    ): Int
+
+    @Query("UPDATE task SET title = :title, updated_at = :now, is_dirty = 1 WHERE id = :id")
+    suspend fun updateTitle(
+        id: Uuid,
+        title: String,
+        now: Long,
+    ): Int
+
+    @Query("UPDATE task SET description = :description, updated_at = :now, is_dirty = 1 WHERE id = :id")
+    suspend fun updateDescription(
+        id: Uuid,
+        description: String?,
         now: Long,
     ): Int
 

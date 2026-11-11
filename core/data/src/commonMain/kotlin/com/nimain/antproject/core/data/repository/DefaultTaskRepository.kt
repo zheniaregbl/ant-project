@@ -1,6 +1,7 @@
 package com.nimain.antproject.core.data.repository
 
 import androidx.sqlite.SQLiteException
+import com.nimain.antproject.core.data.AppCoroutineScope
 import com.nimain.antproject.core.data.mapper.toEntity
 import com.nimain.antproject.core.data.mapper.toModel
 import com.nimain.antproject.core.data.mapper.toTaskId
@@ -18,6 +19,7 @@ import com.nimain.antproject.core.domain.tasks.repository.TaskRepository
 import com.nimain.antproject.core.domain.tasks.result.CreateTaskResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -26,6 +28,7 @@ import kotlin.uuid.Uuid
 internal class DefaultTaskRepository(
     private val taskDao: TaskDao,
     private val projectDao: ProjectDao,
+    private val appScope: AppCoroutineScope,
     private val clock: Clock,
 ) : TaskRepository {
     override fun observeTask(id: TaskId): Flow<TaskDetail?> =
@@ -92,6 +95,36 @@ internal class DefaultTaskRepository(
                 now = clock.now().toEpochMilliseconds(),
             )
         if (updated == 0) throw TaskNotFoundException(id)
+    }
+
+    override suspend fun updateTitle(
+        id: TaskId,
+        title: String,
+    ) {
+        appScope.launch {
+            val updated =
+                taskDao.updateTitle(
+                    id = id.toUuid(),
+                    title = title,
+                    now = clock.now().toEpochMilliseconds(),
+                )
+            if (updated == 0) throw TaskNotFoundException(id)
+        }
+    }
+
+    override suspend fun updateDescription(
+        id: TaskId,
+        description: String?,
+    ) {
+        appScope.launch {
+            val updated =
+                taskDao.updateDescription(
+                    id = id.toUuid(),
+                    description = description,
+                    now = clock.now().toEpochMilliseconds(),
+                )
+            if (updated == 0) throw TaskNotFoundException(id)
+        }
     }
 
     override suspend fun setTags(
