@@ -14,12 +14,14 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
+import com.nimain.antproject.core.domain.tasks.model.TaskId
 import com.nimain.antproject.core.navigation.rememberNavActions
 import com.nimain.antproject.tasks.ProjectListScreen
 import com.nimain.antproject.tasks.ScheduledScreen
 import com.nimain.antproject.tasks.TaskListFilter
 import com.nimain.antproject.tasks.TaskListScreen
-import com.nimain.antproject.tasks.detail.TaskDetailScreen
+import com.nimain.antproject.tasks.detail.DetailScreen
 import com.nimain.antproject.tasks.inbox.InboxScreen
 
 private const val TAB_FADE_DURATION_MS = 200
@@ -56,7 +58,7 @@ fun NavGraphBuilder.tasksGraph(navController: NavController) {
             val navActions = rememberNavActions(navController, entry)
             InboxScreen(
                 modifier = Modifier.fillMaxSize(),
-                navigateToDetails = { navActions.to(TaskDetail) },
+                navigateToDetails = { navActions.to(TaskDetail(it.value)) },
             )
         }
 
@@ -91,8 +93,10 @@ fun NavGraphBuilder.tasksGraph(navController: NavController) {
         }
         composable<TaskDetail> { entry ->
             val navActions = rememberNavActions(navController, entry)
-            TaskDetailScreen(
+            val taskId = TaskId(entry.toRoute<TaskDetail>().taskId)
+            DetailScreen(
                 modifier = Modifier.fillMaxSize(),
+                taskId = taskId,
                 onBack = { navActions.back() },
             )
         }
