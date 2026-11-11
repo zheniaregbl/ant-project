@@ -12,4 +12,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable object ProjectTasks
 
-@Serializable object TaskDetail
+@Serializable class TaskDetail(
+    val taskId: String,
+)
