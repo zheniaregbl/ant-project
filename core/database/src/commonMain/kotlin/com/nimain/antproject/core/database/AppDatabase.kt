@@ -9,6 +9,7 @@ import com.nimain.antproject.core.database.dao.ProjectDao
 import com.nimain.antproject.core.database.dao.SubtaskDao
 import com.nimain.antproject.core.database.dao.TagDao
 import com.nimain.antproject.core.database.dao.TaskDao
+import com.nimain.antproject.core.database.dao.TaskTagDao
 import com.nimain.antproject.core.database.entity.OutboxEntity
 import com.nimain.antproject.core.database.entity.ProjectEntity
 import com.nimain.antproject.core.database.entity.SubtaskEntity
@@ -38,6 +39,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun subtaskDao(): SubtaskDao
 
     abstract fun projectDao(): ProjectDao
+
+    abstract fun tasTagDao(): TaskTagDao
 }
 
 @Suppress("NO_ACTUAL_FOR_EXPECT")

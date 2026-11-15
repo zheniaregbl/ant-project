@@ -1,7 +1,6 @@
 package com.nimain.antproject.core.data.di
 
 import com.nimain.antproject.core.data.createTestDatabase
-import com.nimain.antproject.core.domain.tasks.repository.SubtaskRepository
 import com.nimain.antproject.core.domain.tasks.repository.TaskListRepository
 import com.nimain.antproject.core.domain.tasks.repository.TaskRepository
 import org.koin.core.context.GlobalContext.startKoin

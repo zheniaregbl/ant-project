@@ -1,6 +1,9 @@
 package com.nimain.antproject.core.domain.projects
 
 import com.nimain.antproject.core.domain.common.exception.ProjectNotFoundException
+import com.nimain.antproject.core.domain.projects.model.Project
+import com.nimain.antproject.core.domain.projects.model.ProjectId
+import com.nimain.antproject.core.domain.projects.model.ProjectListItem
 import kotlinx.coroutines.flow.Flow
 
 interface ProjectRepository {

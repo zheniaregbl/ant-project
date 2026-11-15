@@ -7,30 +7,44 @@ import com.nimain.antproject.core.data.mapper.toModel
 import com.nimain.antproject.core.data.mapper.toTaskId
 import com.nimain.antproject.core.data.mapper.toUuid
 import com.nimain.antproject.core.database.dao.ProjectDao
+import com.nimain.antproject.core.database.dao.SubtaskDao
 import com.nimain.antproject.core.database.dao.TaskDao
-import com.nimain.antproject.core.domain.common.exception.ProjectNotFoundException
-import com.nimain.antproject.core.domain.common.exception.TaskNotFoundException
-import com.nimain.antproject.core.domain.projects.ProjectId
+import com.nimain.antproject.core.database.dao.TaskTagDao
+import com.nimain.antproject.core.database.entity.SubtaskEntity
+import com.nimain.antproject.core.domain.projects.model.ProjectId
 import com.nimain.antproject.core.domain.tags.TagId
+import com.nimain.antproject.core.domain.tasks.model.Priority
+import com.nimain.antproject.core.domain.tasks.model.SubtaskId
 import com.nimain.antproject.core.domain.tasks.model.TaskDetail
 import com.nimain.antproject.core.domain.tasks.model.TaskDraft
 import com.nimain.antproject.core.domain.tasks.model.TaskId
 import com.nimain.antproject.core.domain.tasks.repository.TaskRepository
 import com.nimain.antproject.core.domain.tasks.result.CreateTaskResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
+@Suppress("TooManyFunctions")
 @OptIn(ExperimentalUuidApi::class)
 internal class DefaultTaskRepository(
     private val taskDao: TaskDao,
+    private val subtaskDao: SubtaskDao,
     private val projectDao: ProjectDao,
+    private val taskTagDao: TaskTagDao,
     private val appScope: AppCoroutineScope,
     private val clock: Clock,
 ) : TaskRepository {
+    private fun now() = clock.now().toEpochMilliseconds()
+
+    private fun write(block: suspend CoroutineScope.() -> Unit) = appScope.launch(block = block)
+
     override fun observeTask(id: TaskId): Flow<TaskDetail?> =
         taskDao.observeTaskDetail(id.toUuid()).map { it?.toModel() }
 
@@ -38,77 +52,69 @@ internal class DefaultTaskRepository(
         draft: TaskDraft,
         projectId: ProjectId?,
     ): CreateTaskResult =
-        try {
-            val projectUuid = projectId?.let { requireProjectExists(it) }
-            val id = Uuid.generateV7()
-            val now = clock.now()
-            taskDao.insert(
-                draft.toEntity(
-                    id = id,
-                    projectId = projectUuid,
-                    position = now.toEpochMilliseconds().toDouble(),
-                    now = now,
-                ),
-            )
-            CreateTaskResult.Success(id.toTaskId())
-        } catch (_: SQLiteException) {
-            CreateTaskResult.Failure
-        }
+        appScope
+            .async {
+                val projectUuid = projectId?.toUuid()
+                if (projectUuid != null && !projectDao.exists(projectUuid)) {
+                    return@async CreateTaskResult.Failure
+                }
+                try {
+                    val id = Uuid.generateV7()
+                    val now = clock.now()
+                    val position = now.toEpochMilliseconds().toDouble()
+                    taskDao.insert(draft.toEntity(id, projectUuid, position, now))
+                    CreateTaskResult.Success(id.toTaskId())
+                } catch (_: SQLiteException) {
+                    CreateTaskResult.Failure
+                }
+            }.await()
 
-    override suspend fun updateTask(
-        id: TaskId,
-        draft: TaskDraft,
-    ) {
-        val updated =
-            taskDao.update(
+    override fun removeTask(id: TaskId) {
+        write { taskDao.deleteById(id = id.toUuid()) }
+    }
+
+    override fun completeTask(id: TaskId) {
+        write {
+            taskDao.complete(
                 id = id.toUuid(),
-                title = draft.title.trim(),
-                description = draft.description?.trim(),
-                priority = draft.priority.weight,
-                dueDate = draft.dueDate?.toString(),
-                dueTime = draft.dueTime?.toString(),
-                updatedAt = clock.now().toEpochMilliseconds(),
+                now = now(),
             )
-        if (updated == 0) throw TaskNotFoundException(id)
+            // TODO(recurrence): для задачи серии здесь создаётся следующая копия.
+        }
     }
 
-    override suspend fun removeTask(id: TaskId) {
-        taskDao.deleteById(id.toUuid())
+    override fun reopenTask(id: TaskId) {
+        write {
+            taskDao.reopen(
+                id = id.toUuid(),
+                now = now(),
+            )
+        }
     }
 
-    override suspend fun completeTask(id: TaskId) {
-        val uuid = id.toUuid()
-        val updated = taskDao.complete(uuid, clock.now().toEpochMilliseconds())
-        if (updated == 0 && !taskDao.exists(uuid)) throw TaskNotFoundException(id)
-        // TODO(recurrence): для задачи серии здесь создаётся следующая копия.
-    }
-
-    override suspend fun moveTaskToProject(
+    override fun moveTaskToProject(
         id: TaskId,
         projectId: ProjectId?,
     ) {
-        val projectUuid = projectId?.let { requireProjectExists(it) }
-        val updated =
+        write {
             taskDao.moveToProject(
                 id = id.toUuid(),
-                projectId = projectUuid,
-                now = clock.now().toEpochMilliseconds(),
+                projectId = projectId?.toUuid(),
+                now = now(),
             )
-        if (updated == 0) throw TaskNotFoundException(id)
+        }
     }
 
     override fun updateTitle(
         id: TaskId,
         title: String,
     ) {
-        appScope.launch {
-            val updated =
-                taskDao.updateTitle(
-                    id = id.toUuid(),
-                    title = title,
-                    now = clock.now().toEpochMilliseconds(),
-                )
-            if (updated == 0) throw TaskNotFoundException(id)
+        write {
+            taskDao.updateTitle(
+                id = id.toUuid(),
+                title = title,
+                now = now(),
+            )
         }
     }
 
@@ -116,27 +122,118 @@ internal class DefaultTaskRepository(
         id: TaskId,
         description: String?,
     ) {
-        appScope.launch {
-            val updated =
-                taskDao.updateDescription(
-                    id = id.toUuid(),
-                    description = description,
-                    now = clock.now().toEpochMilliseconds(),
-                )
-            if (updated == 0) throw TaskNotFoundException(id)
+        write {
+            taskDao.updateDescription(
+                id = id.toUuid(),
+                description = description,
+                now = now(),
+            )
         }
     }
 
-    override suspend fun setTags(
-        taskId: TaskId,
-        tags: Set<TagId>,
+    override fun updatePriority(
+        id: TaskId,
+        priority: Priority,
     ) {
-        TODO("Нужны TaskTagDao и транзакция: удалить старые связи, вставить новые")
+        write {
+            taskDao.updatePriority(
+                id = id.toUuid(),
+                priority = priority.weight,
+                now = now(),
+            )
+        }
     }
 
-    private suspend fun requireProjectExists(id: ProjectId): Uuid {
-        val uuid = id.toUuid()
-        if (!projectDao.exists(uuid)) throw ProjectNotFoundException(id)
-        return uuid
+    override fun updateDueDateTime(
+        id: TaskId,
+        dueDate: LocalDate?,
+        dueTime: LocalTime?,
+    ) {
+        write {
+            val time = dueTime.takeIf { dueDate != null }
+            taskDao.updateDueDateTime(
+                id = id.toUuid(),
+                dueDate = dueDate?.toString(),
+                dueTime = time?.toString(),
+                now = now(),
+            )
+        }
+    }
+
+    override fun addSubtask(
+        id: TaskId,
+        title: String,
+    ) {
+        write {
+            val subtaskId = Uuid.generateV7()
+            val position = now().toDouble()
+            subtaskDao.insert(
+                subtask =
+                    SubtaskEntity(
+                        id = subtaskId,
+                        taskId = id.toUuid(),
+                        title = title,
+                        isDone = false,
+                        position = position,
+                    ),
+                now = now(),
+            )
+        }
+    }
+
+    override fun renameSubtask(
+        id: TaskId,
+        subtaskId: SubtaskId,
+        title: String,
+    ) {
+        write {
+            subtaskDao.rename(
+                taskId = id.toUuid(),
+                id = subtaskId.toUuid(),
+                title = title,
+                now = now(),
+            )
+        }
+    }
+
+    override fun setSubtaskDone(
+        id: TaskId,
+        subtaskId: SubtaskId,
+        isDone: Boolean,
+    ) {
+        write {
+            subtaskDao.setDone(
+                taskId = id.toUuid(),
+                id = subtaskId.toUuid(),
+                isDone = isDone,
+                now = now(),
+            )
+        }
+    }
+
+    override fun removeSubtask(
+        id: TaskId,
+        subtaskId: SubtaskId,
+    ) {
+        write {
+            subtaskDao.deleteById(
+                taskId = id.toUuid(),
+                id = subtaskId.toUuid(),
+                now = now(),
+            )
+        }
+    }
+
+    override fun toggleTag(
+        id: TaskId,
+        tagId: TagId,
+    ) {
+        write {
+            taskTagDao.toggle(
+                taskId = id.toUuid(),
+                tagId = tagId.toUuid(),
+                now = now(),
+            )
+        }
     }
 }

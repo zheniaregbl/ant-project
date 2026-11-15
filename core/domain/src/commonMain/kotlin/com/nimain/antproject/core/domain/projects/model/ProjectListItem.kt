@@ -1,4 +1,4 @@
-package com.nimain.antproject.core.domain.projects
+package com.nimain.antproject.core.domain.projects.model
 
 /**
  * Строка списка проектов.

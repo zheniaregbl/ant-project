@@ -1,11 +1,13 @@
 package com.nimain.antproject.core.data.di
 
 import com.nimain.antproject.core.data.AppCoroutineScope
-import com.nimain.antproject.core.data.repository.DefaultSubtaskRepository
+import com.nimain.antproject.core.data.repository.DefaultProjectRepository
+import com.nimain.antproject.core.data.repository.DefaultTagRepository
 import com.nimain.antproject.core.data.repository.DefaultTaskListRepository
 import com.nimain.antproject.core.data.repository.DefaultTaskRepository
 import com.nimain.antproject.core.database.di.databaseModule
-import com.nimain.antproject.core.domain.tasks.repository.SubtaskRepository
+import com.nimain.antproject.core.domain.projects.ProjectRepository
+import com.nimain.antproject.core.domain.tags.TagRepository
 import com.nimain.antproject.core.domain.tasks.repository.TaskListRepository
 import com.nimain.antproject.core.domain.tasks.repository.TaskRepository
 import org.koin.core.module.dsl.singleOf
@@ -22,5 +24,6 @@ val dataModule =
 
         singleOf(::DefaultTaskRepository) bind TaskRepository::class
         singleOf(::DefaultTaskListRepository) bind TaskListRepository::class
-        singleOf(::DefaultSubtaskRepository) bind SubtaskRepository::class
+        singleOf(::DefaultTagRepository) bind TagRepository::class
+        singleOf(::DefaultProjectRepository) bind ProjectRepository::class
     }

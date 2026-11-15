@@ -1,6 +1,6 @@
 package com.nimain.antproject.core.data
 
-import com.nimain.antproject.core.domain.projects.ProjectId
+import com.nimain.antproject.core.domain.projects.model.ProjectId
 import com.nimain.antproject.core.domain.tasks.model.TaskDraft
 import com.nimain.antproject.core.domain.tasks.model.TaskId
 import com.nimain.antproject.core.domain.tasks.model.TaskListItem

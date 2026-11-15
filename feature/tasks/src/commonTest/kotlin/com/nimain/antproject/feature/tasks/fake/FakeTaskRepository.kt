@@ -1,6 +1,6 @@
 package com.nimain.antproject.feature.tasks.fake
 
-import com.nimain.antproject.core.domain.projects.ProjectId
+import com.nimain.antproject.core.domain.projects.model.ProjectId
 import com.nimain.antproject.core.domain.tags.TagId
 import com.nimain.antproject.core.domain.tasks.model.TaskDetail
 import com.nimain.antproject.core.domain.tasks.model.TaskDraft

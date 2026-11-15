@@ -1,6 +1,6 @@
 package com.nimain.antproject.core.data.mapper
 
-import com.nimain.antproject.core.domain.projects.ProjectId
+import com.nimain.antproject.core.domain.projects.model.ProjectId
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

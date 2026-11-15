@@ -1,6 +1,6 @@
 package com.nimain.antproject.core.domain.tasks.repository
 
-import com.nimain.antproject.core.domain.projects.ProjectId
+import com.nimain.antproject.core.domain.projects.model.ProjectId
 import com.nimain.antproject.core.domain.tasks.model.TaskListItem
 import com.nimain.antproject.core.domain.tasks.result.TasksResult
 import kotlinx.coroutines.flow.Flow

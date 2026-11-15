@@ -2,7 +2,6 @@ package com.nimain.antproject.core.data
 
 import com.nimain.antproject.core.data.mapper.toSubtaskId
 import com.nimain.antproject.core.data.mapper.toTaskId
-import com.nimain.antproject.core.data.repository.DefaultSubtaskRepository
 import com.nimain.antproject.core.data.repository.DefaultTaskRepository
 import com.nimain.antproject.core.database.AppDatabase
 import com.nimain.antproject.core.domain.common.exception.SubtaskNotFoundException

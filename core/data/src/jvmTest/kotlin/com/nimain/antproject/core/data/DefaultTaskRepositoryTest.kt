@@ -5,7 +5,7 @@ import com.nimain.antproject.core.data.repository.DefaultTaskRepository
 import com.nimain.antproject.core.database.AppDatabase
 import com.nimain.antproject.core.domain.common.exception.ProjectNotFoundException
 import com.nimain.antproject.core.domain.common.exception.TaskNotFoundException
-import com.nimain.antproject.core.domain.projects.ProjectId
+import com.nimain.antproject.core.domain.projects.model.ProjectId
 import com.nimain.antproject.core.domain.tasks.model.Priority
 import com.nimain.antproject.core.domain.tasks.model.TaskDraft
 import com.nimain.antproject.core.domain.tasks.model.TaskId

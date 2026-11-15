@@ -1,6 +1,6 @@
 package com.nimain.antproject.core.domain.tasks.model
 
-import com.nimain.antproject.core.domain.projects.ProjectId
+import com.nimain.antproject.core.domain.projects.model.ProjectId
 import com.nimain.antproject.core.domain.tags.TagId
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate

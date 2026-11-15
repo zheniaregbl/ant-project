@@ -5,7 +5,7 @@ import com.nimain.antproject.core.data.util.normalizedTitle
 import com.nimain.antproject.core.database.AppDatabase
 import com.nimain.antproject.core.database.entity.ProjectEntity
 import com.nimain.antproject.core.database.ext.buildDatabase
-import com.nimain.antproject.core.domain.projects.ProjectId
+import com.nimain.antproject.core.domain.projects.model.ProjectId
 import kotlin.time.Clock
 import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
