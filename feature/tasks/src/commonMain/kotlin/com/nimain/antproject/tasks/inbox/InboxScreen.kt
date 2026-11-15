@@ -44,13 +44,13 @@ import com.nimain.antproject.core.designsystem.components.layout.empty.EmptyIllu
 import com.nimain.antproject.core.designsystem.components.layout.empty.EmptyStateLayout
 import com.nimain.antproject.core.designsystem.components.layout.loading.LoadingStateLayout
 import com.nimain.antproject.core.designsystem.components.taskrow.TaskRow
-import com.nimain.antproject.core.designsystem.components.taskrow.TaskRowModel
 import com.nimain.antproject.core.designsystem.theme.AntTheme
 import com.nimain.antproject.core.domain.tasks.model.Priority
 import com.nimain.antproject.core.domain.tasks.model.TaskId
 import com.nimain.antproject.core.domain.tasks.model.TaskListItem
 import com.nimain.antproject.core.domain.tasks.model.TaskListItemStatus
 import com.nimain.antproject.tasks.components.TaskActionsSheet
+import com.nimain.antproject.tasks.inbox.mapper.toRowModel
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -282,11 +282,7 @@ private fun TaskList(
                                 ),
                             fadeOutSpec = tween(durationMillis = ITEM_FADE_OUT_DURATION_MILLIS),
                         ),
-                model =
-                    TaskRowModel(
-                        title = item.title,
-                        isDone = item.status == TaskListItemStatus.Done,
-                    ),
+                model = item.toRowModel(),
                 onClick = { onTaskClick(item.id) },
                 onLongClick = { onLongClickTask(item.id) },
                 onCheckedChange = { onComplete(item.id) },

@@ -64,17 +64,43 @@ internal class DetailViewModel(
                     .filter { it.isNotBlank() && it != (uiState.value as? DetailUiState.Content)?.taskDetail?.title }
                     .collect { taskRepository.updateTitle(taskId, it) }
             }
+
+            launch {
+                snapshotFlow { description.text }
+                    .map { chars -> chars.toString().ifBlank { null } }
+                    .debounce(DEBOUNCE_TIME_MILLIS.milliseconds)
+                    .filter { it != (uiState.value as? DetailUiState.Content)?.taskDetail?.description }
+                    .collect { taskRepository.updateDescription(taskId, it) }
+            }
+        }
+    }
+
+    fun onAction(action: DetailAction) {
+        when (action) {
+            is DetailAction.PriorityChanged -> {
+                taskRepository.updatePriority(taskId, action.priority)
+            }
+            else -> {}
         }
     }
 
     override fun onCleared() {
         super.onCleared()
 
-        val savedTitle = (uiState.value as? DetailUiState.Content)?.taskDetail?.title ?: return
+        val content = uiState.value as? DetailUiState.Content ?: return
+
+        val savedTitle = content.taskDetail.title
         val currentTitle = title.text.toString()
 
+        val savedDescription = content.taskDetail.description
+        val currentDescription = description.text.toString().ifBlank { null }
+
         if (currentTitle.isNotBlank() && currentTitle != savedTitle) {
-            taskRepository.updateTitle(taskId, title.text.toString())
+            taskRepository.updateTitle(taskId, currentTitle)
+        }
+
+        if (currentDescription != savedDescription) {
+            taskRepository.updateDescription(taskId, currentDescription)
         }
     }
 

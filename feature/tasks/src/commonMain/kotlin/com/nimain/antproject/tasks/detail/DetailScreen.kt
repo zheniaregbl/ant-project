@@ -22,7 +22,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,6 +41,8 @@ import com.nimain.antproject.core.domain.tasks.model.Priority
 import com.nimain.antproject.core.domain.tasks.model.TaskDetail
 import com.nimain.antproject.core.domain.tasks.model.TaskId
 import com.nimain.antproject.core.domain.tasks.model.TaskStatus
+import com.nimain.antproject.tasks.detail.components.PrioritySelector
+import com.nimain.antproject.tasks.detail.components.color
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -61,7 +62,7 @@ internal fun DetailScreen(
         title = viewModel.title,
         description = viewModel.description,
         titleError = viewModel.errorString.collectAsState().value,
-        onAction = {},
+        onAction = viewModel::onAction,
         onBack = onBack,
     )
 }
@@ -174,17 +175,18 @@ private fun Editor(
                 textStyle = MaterialTheme.typography.bodyMedium,
             )
         }
+        item {
+            PrioritySelector(
+                modifier =
+                    Modifier
+                        .padding(top = 22.dp)
+                        .padding(horizontal = AntTheme.spacing.screenHorizontal),
+                selected = state.taskDetail.priority,
+                onSelect = { onAction(DetailAction.PriorityChanged(it)) },
+            )
+        }
     }
 }
-
-@Composable
-private fun Priority.color(): Color =
-    when (this) {
-        Priority.None -> AntTheme.colors.priorityNone
-        Priority.Low -> AntTheme.colors.priorityLow
-        Priority.Medium -> AntTheme.colors.priorityMedium
-        Priority.High -> AntTheme.colors.priorityHigh
-    }
 
 @Suppress("UnusedParameter")
 @Composable
