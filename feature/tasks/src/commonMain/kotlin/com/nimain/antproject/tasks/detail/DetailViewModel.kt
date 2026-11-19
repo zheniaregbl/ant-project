@@ -5,12 +5,15 @@ import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nimain.antproject.core.domain.projects.ProjectRepository
+import com.nimain.antproject.core.domain.tags.TagRepository
 import com.nimain.antproject.core.domain.tasks.model.TaskId
 import com.nimain.antproject.core.domain.tasks.repository.TaskRepository
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -24,25 +27,29 @@ import kotlin.time.Duration.Companion.milliseconds
 @OptIn(FlowPreview::class)
 internal class DetailViewModel(
     private val taskRepository: TaskRepository,
+    private val projectRepository: ProjectRepository,
+    private val tagRepository: TagRepository,
     private val taskId: TaskId,
 ) : ViewModel() {
     val title = TextFieldState()
     val description = TextFieldState()
     val errorString = MutableStateFlow<String?>(null)
     val uiState: StateFlow<DetailUiState> =
-        taskRepository
-            .observeTask(taskId)
-            .map { detail ->
-                if (detail != null) {
-                    DetailUiState.Content(
-                        taskDetail = detail,
-                        projects = emptyList(),
-                        tags = emptyList(),
-                    )
-                } else {
-                    DetailUiState.Error
-                }
-            }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), DetailUiState.Loading)
+        combine(
+            taskRepository.observeTask(taskId),
+            projectRepository.observeProjects(),
+            tagRepository.observeTags(),
+        ) { detail, projects, tags ->
+            if (detail != null) {
+                DetailUiState.Content(
+                    taskDetail = detail,
+                    projects = projects,
+                    tags = tags,
+                )
+            } else {
+                DetailUiState.Error
+            }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), DetailUiState.Loading)
 
     init {
         viewModelScope.launch {
@@ -77,9 +84,30 @@ internal class DetailViewModel(
 
     fun onAction(action: DetailAction) {
         when (action) {
-            is DetailAction.PriorityChanged -> {
+            is DetailAction.PriorityChanged ->
                 taskRepository.updatePriority(taskId, action.priority)
-            }
+
+            is DetailAction.ProjectChanged ->
+                taskRepository.moveTaskToProject(taskId, action.projectId)
+
+            is DetailAction.DueDateTimeChanged ->
+                taskRepository.updateDueDateTime(taskId, action.date, action.time)
+
+            is DetailAction.SubtaskCreated ->
+                taskRepository.addSubtask(taskId, action.title)
+
+            is DetailAction.SubtaskChecked ->
+                taskRepository.setSubtaskDone(taskId, action.subtaskId, true)
+
+            is DetailAction.SubtaskRenamed ->
+                taskRepository.renameSubtask(taskId, action.subtaskId, action.newTitle)
+
+            is DetailAction.SubtaskDeleted ->
+                taskRepository.removeSubtask(taskId, action.subtaskId)
+
+            is DetailAction.TagToggled ->
+                taskRepository.toggleTag(taskId, action.tagId)
+
             else -> {}
         }
     }

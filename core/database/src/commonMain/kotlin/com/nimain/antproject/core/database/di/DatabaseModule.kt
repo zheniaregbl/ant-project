@@ -13,7 +13,10 @@ val databaseModule =
         includes(databasePlatformModule)
 
         single { createDatabaseBuilder(get()).buildDatabase() }
+
         single { get<AppDatabase>().taskDao() }
         single { get<AppDatabase>().subtaskDao() }
         single { get<AppDatabase>().projectDao() }
+        single { get<AppDatabase>().tagDao() }
+        single { get<AppDatabase>().taskTagDao() }
     }

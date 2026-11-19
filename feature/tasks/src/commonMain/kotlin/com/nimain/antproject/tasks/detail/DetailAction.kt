@@ -16,11 +16,8 @@ internal sealed interface DetailAction {
         val projectId: ProjectId?,
     ) : DetailAction
 
-    data class DueDateChanged(
+    data class DueDateTimeChanged(
         val date: LocalDate?,
-    ) : DetailAction
-
-    data class DueTimeChanged(
         val time: LocalTime?,
     ) : DetailAction
 
@@ -45,11 +42,7 @@ internal sealed interface DetailAction {
         val priority: Priority,
     ) : DetailAction
 
-    data class TagAdded(
-        val tagId: TagId,
-    ) : DetailAction
-
-    data class TagRemoved(
+    data class TagToggled(
         val tagId: TagId,
     ) : DetailAction
 }

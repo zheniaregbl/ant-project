@@ -40,7 +40,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun projectDao(): ProjectDao
 
-    abstract fun tasTagDao(): TaskTagDao
+    abstract fun taskTagDao(): TaskTagDao
 }
 
 @Suppress("NO_ACTUAL_FOR_EXPECT")
