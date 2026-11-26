@@ -27,8 +27,8 @@ import kotlin.time.Duration.Companion.milliseconds
 @OptIn(FlowPreview::class)
 internal class DetailViewModel(
     private val taskRepository: TaskRepository,
-    private val projectRepository: ProjectRepository,
-    private val tagRepository: TagRepository,
+    projectRepository: ProjectRepository,
+    tagRepository: TagRepository,
     private val taskId: TaskId,
 ) : ViewModel() {
     val title = TextFieldState()

@@ -22,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -41,8 +42,11 @@ import com.nimain.antproject.core.domain.tasks.model.Priority
 import com.nimain.antproject.core.domain.tasks.model.TaskDetail
 import com.nimain.antproject.core.domain.tasks.model.TaskId
 import com.nimain.antproject.core.domain.tasks.model.TaskStatus
+import com.nimain.antproject.tasks.detail.components.DueRow
 import com.nimain.antproject.tasks.detail.components.PrioritySelector
 import com.nimain.antproject.tasks.detail.components.color
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -124,6 +128,7 @@ internal fun DetailContent(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun Editor(
     state: DetailUiState.Content,
@@ -161,19 +166,44 @@ private fun Editor(
             }
         }
         item {
-            AntTextField(
+            Column(
                 modifier =
                     Modifier
-                        .padding(horizontal = AntTheme.spacing.screenHorizontal)
-                        .background(
-                            color = MaterialTheme.colorScheme.surfaceContainerLow,
-                            shape = MaterialTheme.shapes.medium,
-                        ).padding(horizontal = 18.dp, vertical = 16.dp),
-                state = description,
-                placeholder = "Описание задачи...",
-                variant = AntTextFieldVariant.Plain,
-                textStyle = MaterialTheme.typography.bodyMedium,
-            )
+                        .fillMaxWidth()
+                        .padding(horizontal = AntTheme.spacing.screenHorizontal),
+            ) {
+                Column(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                                shape = MaterialTheme.shapes.medium,
+                            ),
+                ) {
+                    DueRow(
+                        modifier =
+                            Modifier
+                                .clip(MaterialTheme.shapes.medium)
+                                .fillMaxWidth(),
+                        dueDate = state.taskDetail.dueDate,
+                        dueTime = state.taskDetail.dueTime,
+                        onClick = { /* Вызов BottomSheet для выбора срока */ },
+                    )
+                }
+                AntTextField(
+                    modifier =
+                        Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                                shape = MaterialTheme.shapes.medium,
+                            ).padding(horizontal = 18.dp, vertical = 16.dp),
+                    state = description,
+                    placeholder = "Описание задачи...",
+                    variant = AntTextFieldVariant.Plain,
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                )
+            }
         }
         item {
             PrioritySelector(
@@ -230,8 +260,8 @@ private fun DetailScreenCatalog() {
                             priority = Priority.None,
                             subtasks = emptyList(),
                             tags = emptyList(),
-                            dueDate = null,
-                            dueTime = null,
+                            dueDate = LocalDate(2026, 11, 23),
+                            dueTime = LocalTime(11, 30),
                             recurrence = null,
                         ),
                     projects = emptyList(),
