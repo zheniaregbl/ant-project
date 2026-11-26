@@ -97,11 +97,12 @@ private fun DuePickSheetContent(
     onShowDatePicker: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
     val defaultDateList =
         listOf(
-            Clock.System.todayIn(TimeZone.currentSystemDefault()),
-            Clock.System.todayIn(TimeZone.currentSystemDefault()).plus(1L, DateTimeUnit.DAY),
-            Clock.System.todayIn(TimeZone.currentSystemDefault()).plus(2L, DateTimeUnit.DAY),
+            today,
+            today.plus(1L, DateTimeUnit.DAY),
+            today.plus(2L, DateTimeUnit.DAY),
         )
 
     Column(
@@ -123,6 +124,7 @@ private fun DuePickSheetContent(
             defaultDateList.forEach {
                 DateRow(
                     date = it,
+                    today = today,
                     isSelected = dueDate == it,
                     onClick = { onChangeDate(it) },
                 )
@@ -218,18 +220,19 @@ private fun DueOptionRow(
 @Composable
 private fun DateRow(
     date: LocalDate,
+    today: LocalDate,
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         DueOptionRow(
-            title = formatRelativeDueDate(date),
+            title = formatRelativeDueDate(date, today),
             isSelected = isSelected,
             onClick = onClick,
             trailingContent = {
                 Text(
-                    text = formatDueDayMonth(date),
+                    text = formatDueDayMonth(date, today),
                     style = AntTheme.typography.meta.copy(fontSize = 12.sp),
                     color =
                         if (isSelected) {

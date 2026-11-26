@@ -14,8 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.nimain.antproject.core.designsystem.theme.AntTheme
-import com.nimain.antproject.tasks.detail.util.formatDueDayMonth
-import com.nimain.antproject.tasks.detail.util.formatRelativeDueDate
+import com.nimain.antproject.tasks.detail.util.formatDueDateLabel
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 
@@ -26,7 +25,7 @@ internal fun DueRow(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val dateText = formatRelativeDueDate(dueDate).ifEmpty { formatDueDayMonth(dueDate) }
+    val dateText = formatDueDateLabel(dueDate)
     val dueText = if (dateText.isNotEmpty() && dueTime != null) "$dateText, $dueTime" else dateText
 
     Row(

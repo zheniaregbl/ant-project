@@ -19,10 +19,25 @@ internal fun formatRelativeDueDate(
     }
 }
 
-internal fun formatDueDayMonth(date: LocalDate?): String {
+internal fun formatDueDayMonth(
+    date: LocalDate?,
+    today: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+): String {
     if (date == null) return ""
-    return "${date.day} ${monthNames[date.month.number - 1]}"
+
+    val dayMonth = "${date.day} ${monthNames[date.month.number - 1]}"
+    return if (date.year == today.year) dayMonth else "$dayMonth ${date.year}"
 }
+
+internal fun formatDueDateLabel(
+    date: LocalDate?,
+    today: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+): String =
+    when {
+        date == null -> ""
+        date.year != today.year -> formatDueDayMonth(date, today)
+        else -> formatRelativeDueDate(date, today).ifEmpty { formatDueDayMonth(date, today) }
+    }
 
 private val monthNames =
     listOf("янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек")

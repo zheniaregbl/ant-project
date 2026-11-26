@@ -7,8 +7,7 @@ import com.nimain.antproject.core.designsystem.components.taskrow.TaskRowPriorit
 import com.nimain.antproject.core.domain.tasks.model.Priority
 import com.nimain.antproject.core.domain.tasks.model.TaskListItem
 import com.nimain.antproject.core.domain.tasks.model.TaskListItemStatus
-import com.nimain.antproject.tasks.detail.util.formatDueDayMonth
-import com.nimain.antproject.tasks.detail.util.formatRelativeDueDate
+import com.nimain.antproject.tasks.detail.util.formatDueDateLabel
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
@@ -38,10 +37,10 @@ internal fun TaskListItem.toRowModel(
 private fun TaskListItem.toRowDue(today: LocalDate): TaskRowDue? {
     val date = dueDate ?: return null
     val dateText =
-        if (today.toEpochDays() - date.toEpochDays() == 1L) {
+        if (date.year == today.year && today.toEpochDays() - date.toEpochDays() == 1L) {
             "Вчера"
         } else {
-            formatRelativeDueDate(date, today).ifEmpty { formatDueDayMonth(date) }
+            formatDueDateLabel(date, today)
         }
     val timeText = dueTime?.format(dueTimeFormat)
     val dueStatus =
