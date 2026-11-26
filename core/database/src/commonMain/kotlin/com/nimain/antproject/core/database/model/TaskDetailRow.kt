@@ -18,6 +18,7 @@ data class TaskDetailRow(
     @ColumnInfo(name = "due_date") val dueDate: String?,
     @ColumnInfo(name = "due_time") val dueTime: String?,
     @ColumnInfo(name = "project_id") val projectId: Uuid?,
+    @ColumnInfo(name = "completed_at") val completedAt: Long?,
     @Relation(parentColumn = "project_id", entityColumn = "id")
     val project: ProjectEntity?,
     @Relation(parentColumn = "id", entityColumn = "task_id")

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.nimain.antproject.core.domain.projects.ProjectRepository
 import com.nimain.antproject.core.domain.tags.TagRepository
 import com.nimain.antproject.core.domain.tasks.model.TaskId
+import com.nimain.antproject.core.domain.tasks.model.TaskStatus
 import com.nimain.antproject.core.domain.tasks.repository.TaskRepository
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,6 +85,8 @@ internal class DetailViewModel(
 
     fun onAction(action: DetailAction) {
         when (action) {
+            is DetailAction.TaskToggled -> toggleTaskCompletion()
+
             is DetailAction.PriorityChanged ->
                 taskRepository.updatePriority(taskId, action.priority)
 
@@ -128,6 +131,14 @@ internal class DetailViewModel(
                 taskRepository.toggleTag(taskId, action.tagId)
 
             else -> {}
+        }
+    }
+
+    private fun toggleTaskCompletion() {
+        val state = (uiState.value as? DetailUiState.Content)?.taskDetail?.status ?: return
+        when (state) {
+            is TaskStatus.Done -> taskRepository.reopenTask(taskId)
+            TaskStatus.Active, TaskStatus.Skipped -> taskRepository.completeTask(taskId)
         }
     }
 

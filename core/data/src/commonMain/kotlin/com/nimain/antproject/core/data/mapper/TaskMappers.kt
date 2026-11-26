@@ -38,7 +38,7 @@ internal fun TaskDetailRow.toModel() =
         title = title,
         description = description,
         isArchived = false, // TODO: Поставить реальное значение флага при реализации архива
-        status = taskStatusOf(status, id),
+        status = taskStatusOf(status, completedAt, id),
         priority = priorityOf(priority, id),
         subtasks = subtasks.map { it.toModel() },
         tags = tags.map { it.toModel() },
@@ -81,17 +81,6 @@ internal fun taskListItemStatusOf(
         TaskStatusCode.ACTIVE -> TaskListItemStatus.Active
         TaskStatusCode.DONE -> TaskListItemStatus.Done
         TaskStatusCode.SKIPPED -> TaskListItemStatus.Skipped
-        else -> error("Task [$taskId] has unknown status code '$code'.")
-    }
-
-internal fun taskStatusOf(
-    code: String,
-    taskId: Uuid,
-): TaskStatus =
-    when (code) {
-        TaskStatusCode.ACTIVE -> TaskStatus.Active
-        TaskStatusCode.DONE -> TaskStatus.Active
-        TaskStatusCode.SKIPPED -> TaskStatus.Skipped
         else -> error("Task [$taskId] has unknown status code '$code'.")
     }
 

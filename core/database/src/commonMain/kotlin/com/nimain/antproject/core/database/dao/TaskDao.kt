@@ -66,7 +66,7 @@ interface TaskDao {
     @Transaction
     @Query(
         """
-    SELECT id, title, description, status, priority, due_date, due_time, project_id
+    SELECT id, title, description, status, priority, due_date, due_time, project_id, completed_at
     FROM task
     WHERE id = :id
         """,
