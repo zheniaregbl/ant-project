@@ -16,8 +16,11 @@ internal sealed interface DetailAction {
         val projectId: ProjectId?,
     ) : DetailAction
 
-    data class DueDateTimeChanged(
+    data class DueDateChanged(
         val date: LocalDate?,
+    ) : DetailAction
+
+    data class DueTimeChanged(
         val time: LocalTime?,
     ) : DetailAction
 

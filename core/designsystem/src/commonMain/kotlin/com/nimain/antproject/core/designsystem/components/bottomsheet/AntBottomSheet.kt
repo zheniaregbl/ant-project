@@ -60,7 +60,7 @@ fun AntBottomSheet(
         modifier = modifier,
         sheetState = sheetState,
         shape = sheetShape(),
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        containerColor = AntTheme.colors.bottomSheet,
         contentColor = MaterialTheme.colorScheme.onSurface,
         tonalElevation = 0.dp,
         scrimColor = AntTheme.colors.scrim,
@@ -93,7 +93,7 @@ internal fun AntBottomSheetPreviewContainer(content: @Composable ColumnScope.(di
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = sheetShape(),
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        color = AntTheme.colors.bottomSheet,
         contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {

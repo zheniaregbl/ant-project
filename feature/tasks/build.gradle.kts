@@ -4,5 +4,6 @@ plugins {
 
 kotlin {
     sourceSets.commonMain.dependencies {
+        implementation(libs.datetime.wheel.picker)
     }
 }

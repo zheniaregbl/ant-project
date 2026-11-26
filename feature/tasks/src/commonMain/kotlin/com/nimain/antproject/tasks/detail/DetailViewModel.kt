@@ -90,8 +90,27 @@ internal class DetailViewModel(
             is DetailAction.ProjectChanged ->
                 taskRepository.moveTaskToProject(taskId, action.projectId)
 
-            is DetailAction.DueDateTimeChanged ->
-                taskRepository.updateDueDateTime(taskId, action.date, action.time)
+            is DetailAction.DueDateChanged -> {
+                val task = (uiState.value as? DetailUiState.Content)?.taskDetail ?: return
+
+                taskRepository.updateDueDateTime(
+                    id = taskId,
+                    dueDate = action.date,
+                    dueTime = task.dueTime.takeIf { action.date != null },
+                )
+            }
+
+            is DetailAction.DueTimeChanged -> {
+                val date =
+                    (uiState.value as? DetailUiState.Content)?.taskDetail?.dueDate
+                        ?: return
+
+                taskRepository.updateDueDateTime(
+                    id = taskId,
+                    dueDate = date,
+                    dueTime = action.time,
+                )
+            }
 
             is DetailAction.SubtaskCreated ->
                 taskRepository.addSubtask(taskId, action.title)

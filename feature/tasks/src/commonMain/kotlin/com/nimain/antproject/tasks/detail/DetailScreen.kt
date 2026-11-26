@@ -20,6 +20,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,6 +45,8 @@ import com.nimain.antproject.core.domain.tasks.model.Priority
 import com.nimain.antproject.core.domain.tasks.model.TaskDetail
 import com.nimain.antproject.core.domain.tasks.model.TaskId
 import com.nimain.antproject.core.domain.tasks.model.TaskStatus
+import com.nimain.antproject.tasks.components.duepick.DuePickSheet
+import com.nimain.antproject.tasks.detail.components.DueDatePickerDialog
 import com.nimain.antproject.tasks.detail.components.DueRow
 import com.nimain.antproject.tasks.detail.components.PrioritySelector
 import com.nimain.antproject.tasks.detail.components.color
@@ -138,6 +143,8 @@ private fun Editor(
     onAction: (DetailAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var duePicker by rememberSaveable { mutableStateOf(DuePicker.Closed) }
+
     LazyColumn(modifier = modifier) {
         item {
             Row(
@@ -188,7 +195,7 @@ private fun Editor(
                                 .fillMaxWidth(),
                         dueDate = state.taskDetail.dueDate,
                         dueTime = state.taskDetail.dueTime,
-                        onClick = { /* Вызов BottomSheet для выбора срока */ },
+                        onClick = { duePicker = DuePicker.Sheet },
                     )
                 }
                 AntTextField(
@@ -216,6 +223,33 @@ private fun Editor(
             )
         }
     }
+    when (duePicker) {
+        DuePicker.Closed -> Unit
+        DuePicker.Sheet ->
+            DuePickSheet(
+                dueDate = state.taskDetail.dueDate,
+                dueTime = state.taskDetail.dueTime,
+                onDismiss = { duePicker = DuePicker.Closed },
+                onChangeDate = { onAction(DetailAction.DueDateChanged(it)) },
+                onChangeTime = { onAction(DetailAction.DueTimeChanged(it)) },
+                onShowDatePicker = { duePicker = DuePicker.Calendar },
+            )
+        DuePicker.Calendar ->
+            DueDatePickerDialog(
+                dueDate = state.taskDetail.dueDate,
+                onDismiss = { duePicker = DuePicker.Sheet },
+                onDatePicked = {
+                    onAction(DetailAction.DueDateChanged(it))
+                    duePicker = DuePicker.Sheet
+                },
+            )
+    }
+}
+
+private enum class DuePicker {
+    Closed,
+    Sheet,
+    Calendar,
 }
 
 @Suppress("UnusedParameter")
