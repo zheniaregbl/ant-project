@@ -41,18 +41,20 @@ internal fun DueRow(
             text = "Срок",
             style = MaterialTheme.typography.bodyMedium,
         )
-
-        if (dueText.isNotEmpty()) {
-            Text(
-                modifier =
-                    Modifier
-                        .clip(CircleShape)
-                        .background(color = AntTheme.colors.fill)
-                        .padding(horizontal = 14.dp, vertical = 10.dp),
-                text = dueText,
-                style = AntTheme.typography.meta,
-                color = MaterialTheme.colorScheme.primary,
-            )
-        }
+        Text(
+            modifier =
+                Modifier
+                    .clip(CircleShape)
+                    .background(AntTheme.colors.fill)
+                    .padding(horizontal = 14.dp, vertical = 10.dp),
+            text = dueText.ifEmpty { "Не указан" },
+            style = AntTheme.typography.meta,
+            color =
+                if (dueDate == null) {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                } else {
+                    MaterialTheme.colorScheme.primary
+                },
+        )
     }
 }

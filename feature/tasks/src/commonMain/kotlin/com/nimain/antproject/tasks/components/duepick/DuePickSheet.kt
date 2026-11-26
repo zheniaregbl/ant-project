@@ -322,12 +322,27 @@ private fun DueTimeSection(
             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
             color = MaterialTheme.colorScheme.onSurface,
         )
-
-        Text(
-            text = dueTime?.format(dueTimeFormat) ?: "Указать >",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = dueTime?.format(dueTimeFormat) ?: "Указать",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+            if (dueTime == null) {
+                Icon(
+                    modifier =
+                        Modifier
+                            .rotate(180f)
+                            .size(14.dp),
+                    painter = painterResource(Res.drawable.back_svg),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
+        }
     }
 }
 
@@ -388,6 +403,7 @@ private fun TimeWheelSection(
             )
         }
         AntButton(
+            modifier = Modifier.fillMaxWidth(),
             text = "Убрать",
             onClick = { onTimeChange(null) },
             variant = AntButtonVariant.Text,
