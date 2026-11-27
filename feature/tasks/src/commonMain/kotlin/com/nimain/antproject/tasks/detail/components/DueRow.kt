@@ -22,6 +22,7 @@ import kotlinx.datetime.LocalTime
 internal fun DueRow(
     dueDate: LocalDate?,
     dueTime: LocalTime?,
+    canEdit: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -31,8 +32,10 @@ internal fun DueRow(
     Row(
         modifier =
             modifier
-                .clickable(onClick = onClick)
-                .padding(horizontal = 18.dp, vertical = 16.dp),
+                .clickable(
+                    enabled = canEdit,
+                    onClick = onClick,
+                ).padding(horizontal = 18.dp, vertical = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {

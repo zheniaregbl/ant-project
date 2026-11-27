@@ -28,6 +28,7 @@ import com.nimain.antproject.core.domain.tasks.model.Priority
 @Composable
 internal fun PrioritySelector(
     selected: Priority,
+    canEdit: Boolean,
     onSelect: (Priority) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -54,6 +55,7 @@ internal fun PrioritySelector(
                     modifier = Modifier.weight(1f),
                     priority = it,
                     isSelected = it == selected,
+                    canEdit = canEdit,
                     onClick = onSelect,
                 )
             }
@@ -65,6 +67,7 @@ internal fun PrioritySelector(
 private fun PrioritySelectorSegment(
     priority: Priority,
     isSelected: Boolean,
+    canEdit: Boolean,
     onClick: (Priority) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -82,6 +85,7 @@ private fun PrioritySelectorSegment(
                     shape = CircleShape,
                 ).clip(CircleShape)
                 .selectable(
+                    enabled = canEdit,
                     selected = isSelected,
                     role = Role.RadioButton,
                     indication = null,

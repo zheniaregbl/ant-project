@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -86,6 +87,9 @@ internal fun DetailContent(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val task = (state as? DetailUiState.Content)?.taskDetail
+    val canEdit = task != null && task.status !is TaskStatus.Done
+
     Scaffold(modifier = modifier) { padding ->
         val top = padding.calculateTopPadding()
 
@@ -96,7 +100,8 @@ internal fun DetailContent(
                         .fillMaxWidth()
                         .padding(top = top)
                         .padding(horizontal = AntTheme.spacing.screenHorizontal),
-                onAction = onAction,
+                canEdit = canEdit,
+                onMenuClick = { },
                 onBack = onBack,
             )
             AnimatedContent(
@@ -115,6 +120,7 @@ internal fun DetailContent(
                             title = title,
                             description = description,
                             titleError = titleError,
+                            canEdit = canEdit,
                             onAction = onAction,
                         )
 
@@ -140,10 +146,17 @@ private fun Editor(
     title: TextFieldState,
     description: TextFieldState,
     titleError: String?,
+    canEdit: Boolean,
     onAction: (DetailAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var duePicker by rememberSaveable { mutableStateOf(DuePicker.Closed) }
+
+    LaunchedEffect(canEdit) {
+        if (!canEdit) {
+            duePicker = DuePicker.Closed
+        }
+    }
 
     LazyColumn(modifier = modifier) {
         item {
@@ -169,6 +182,7 @@ private fun Editor(
                     variant = AntTextFieldVariant.Plain,
                     textStyle = MaterialTheme.typography.titleLarge,
                     errorText = titleError,
+                    enabled = canEdit,
                 )
             }
         }
@@ -195,6 +209,7 @@ private fun Editor(
                                 .fillMaxWidth(),
                         dueDate = state.taskDetail.dueDate,
                         dueTime = state.taskDetail.dueTime,
+                        canEdit = canEdit,
                         onClick = { duePicker = DuePicker.Sheet },
                     )
                 }
@@ -219,6 +234,7 @@ private fun Editor(
                         .padding(top = 22.dp)
                         .padding(horizontal = AntTheme.spacing.screenHorizontal),
                 selected = state.taskDetail.priority,
+                canEdit = canEdit,
                 onSelect = { onAction(DetailAction.PriorityChanged(it)) },
             )
         }
@@ -252,10 +268,10 @@ private enum class DuePicker {
     Calendar,
 }
 
-@Suppress("UnusedParameter")
 @Composable
 private fun TopButtonsRow(
-    onAction: (DetailAction) -> Unit,
+    canEdit: Boolean,
+    onMenuClick: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -271,7 +287,8 @@ private fun TopButtonsRow(
         AntIconButton(
             icon = painterResource(Res.drawable.dots_svg),
             contentDescription = "",
-            onClick = {},
+            enabled = canEdit,
+            onClick = onMenuClick,
         )
     }
 }
