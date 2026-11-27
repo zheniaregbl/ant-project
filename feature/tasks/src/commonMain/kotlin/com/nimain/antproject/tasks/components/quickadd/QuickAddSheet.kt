@@ -54,7 +54,8 @@ fun QuickAddSheet(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AntTheme.spacing.screenHorizontal),
+                    .padding(horizontal = AntTheme.spacing.screenHorizontal)
+                    .padding(bottom = 20.dp),
             titleState = viewModel.title,
             canSubmit = viewModel.canSubmit,
             isFailed = viewModel.status == SubmitStatus.Failed,
