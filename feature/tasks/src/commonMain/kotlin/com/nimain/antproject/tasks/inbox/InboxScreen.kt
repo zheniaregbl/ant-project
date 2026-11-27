@@ -37,7 +37,6 @@ import ant_project.feature.tasks.generated.resources.Res
 import ant_project.feature.tasks.generated.resources.moon_svg
 import com.nimain.antproject.core.designsystem.components.AntCaption
 import com.nimain.antproject.core.designsystem.components.chip.filter.AntFilterChip
-import com.nimain.antproject.core.designsystem.components.dialog.ConfirmDialog
 import com.nimain.antproject.core.designsystem.components.iconbutton.AntIconButton
 import com.nimain.antproject.core.designsystem.components.layout.LocalBottomBarPadding
 import com.nimain.antproject.core.designsystem.components.layout.empty.EmptyIllustration
@@ -84,7 +83,6 @@ internal fun InboxContent(
     modifier: Modifier = Modifier,
 ) {
     var menuTaskId by rememberSaveable { mutableStateOf<TaskId?>(null) }
-    var deleteTaskId by rememberSaveable { mutableStateOf<TaskId?>(null) }
 
     Scaffold(modifier = modifier) { padding ->
         val top = padding.calculateTopPadding()
@@ -115,27 +113,14 @@ internal fun InboxContent(
 
     val tasks = (state as? InboxUiState.Content)?.tasks.orEmpty()
     val menuTask = tasks.find { it.id == menuTaskId }
-    val deleteTask = tasks.find { it.id == deleteTaskId }
 
     if (menuTask != null) {
         TaskActionsSheet(
             title = menuTask.title,
-            onDelete = { deleteTaskId = menuTask.id },
-            onDismiss = { menuTaskId = null },
-        )
-    }
-
-    if (deleteTask != null) {
-        ConfirmDialog(
-            title = "Удалить задачу?",
-            message = "«${deleteTask.title}» будет удалена без возможности восстановления.",
-            confirmText = "Удалить",
-            dismissText = "Отменить",
-            onConfirm = {
-                onAction(InboxAction.DeleteTaskConfirmed(deleteTask.id))
-                deleteTaskId = null
+            onDelete = {
+                onAction(InboxAction.DeleteTaskConfirmed(menuTask.id))
             },
-            onDismiss = { deleteTaskId = null },
+            onDismiss = { menuTaskId = null },
         )
     }
 }

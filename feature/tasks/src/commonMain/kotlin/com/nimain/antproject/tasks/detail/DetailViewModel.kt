@@ -87,6 +87,9 @@ internal class DetailViewModel(
         when (action) {
             is DetailAction.TaskToggled -> toggleTaskCompletion()
 
+            is DetailAction.DeleteTaskConfirmed ->
+                taskRepository.removeTask(taskId)
+
             is DetailAction.PriorityChanged ->
                 taskRepository.updatePriority(taskId, action.priority)
 
@@ -129,8 +132,6 @@ internal class DetailViewModel(
 
             is DetailAction.TagToggled ->
                 taskRepository.toggleTag(taskId, action.tagId)
-
-            else -> {}
         }
     }
 

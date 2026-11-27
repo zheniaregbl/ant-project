@@ -46,6 +46,7 @@ import com.nimain.antproject.core.domain.tasks.model.Priority
 import com.nimain.antproject.core.domain.tasks.model.TaskDetail
 import com.nimain.antproject.core.domain.tasks.model.TaskId
 import com.nimain.antproject.core.domain.tasks.model.TaskStatus
+import com.nimain.antproject.tasks.components.TaskActionsSheet
 import com.nimain.antproject.tasks.components.duepick.DuePickSheet
 import com.nimain.antproject.tasks.detail.components.DueDatePickerDialog
 import com.nimain.antproject.tasks.detail.components.DueRow
@@ -90,6 +91,8 @@ internal fun DetailContent(
     val task = (state as? DetailUiState.Content)?.taskDetail
     val canEdit = task != null && task.status !is TaskStatus.Done
 
+    var showTaskMenu by rememberSaveable { mutableStateOf(false) }
+
     Scaffold(modifier = modifier) { padding ->
         val top = padding.calculateTopPadding()
 
@@ -101,7 +104,7 @@ internal fun DetailContent(
                         .padding(top = top)
                         .padding(horizontal = AntTheme.spacing.screenHorizontal),
                 canEdit = canEdit,
-                onMenuClick = { },
+                onMenuClick = { showTaskMenu = true },
                 onBack = onBack,
             )
             AnimatedContent(
@@ -136,6 +139,17 @@ internal fun DetailContent(
                 }
             }
         }
+    }
+
+    if (showTaskMenu && canEdit) {
+        TaskActionsSheet(
+            title = task.title,
+            onDelete = {
+                onAction(DetailAction.DeleteTaskConfirmed)
+                onBack()
+            },
+            onDismiss = { showTaskMenu = false },
+        )
     }
 }
 
@@ -224,6 +238,7 @@ private fun Editor(
                     placeholder = "Описание задачи...",
                     variant = AntTextFieldVariant.Plain,
                     textStyle = MaterialTheme.typography.bodyMedium,
+                    enabled = canEdit,
                 )
             }
         }
@@ -239,6 +254,7 @@ private fun Editor(
             )
         }
     }
+
     when (duePicker) {
         DuePicker.Closed -> Unit
         DuePicker.Sheet ->
