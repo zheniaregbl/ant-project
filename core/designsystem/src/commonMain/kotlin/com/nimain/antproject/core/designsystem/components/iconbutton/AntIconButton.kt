@@ -34,6 +34,7 @@ fun AntIconButton(
     modifier: Modifier = Modifier,
     variant: AntIconButtonVariant = AntIconButtonVariant.Neutral,
     size: AntIconButtonSize = AntIconButtonSize.Small,
+    enabled: Boolean = true,
 ) {
     val border = variant.border()
     FilledIconButton(
@@ -42,6 +43,7 @@ fun AntIconButton(
             modifier
                 .then(if (border != null) Modifier.border(border, CircleShape) else Modifier)
                 .size(size.buttonSize),
+        enabled = enabled,
         shape = CircleShape,
         colors = variant.colors(),
     ) {
